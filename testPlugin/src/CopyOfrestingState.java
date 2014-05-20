@@ -1714,10 +1714,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					}
 					Boolean filt=false;
 					for (int k = 0; k < dossier_filtre.size(); k++) {
-						System.out.println(k+" : "+dossier_filtre.get(k).toString());
 						if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
 							filt=true;
-						System.out.println(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"));
 					}
 					if(textField_14.getText().isEmpty()) {
 					Long time = System.nanoTime();
@@ -1804,7 +1802,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						ArrayList<File> files = new ArrayList<>();
 						files.add((new File(dir + File.separator + nom + ".m")));
 						//files.add((new File(dir + File.separator + nom + ".bat")));
-						/*if (comboBox.getSelectedItem().equals("WINDOWS")
+						if(!textField_7.getText().isEmpty())
+							files.add((new File(textField_7.getText())));
+						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem()
 										.equals("X86_64"))
 							CondorUtils.submitJob(dir, files, new File(dir
@@ -1833,13 +1833,13 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.INTEL, description);*/
+									OS.UNIX, Arch.INTEL, description);
 					} catch (IOException e) {
 						e.printStackTrace();
-					} /*catch (SQLException e) {
+					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}*/ catch (BadLocationException e) {
+					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -1928,8 +1928,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							
 							ArrayList<File> files = new ArrayList<>();
 							files.add((new File(dir + File.separator + nom + ".m")));
+							if(!textField_7.getText().isEmpty())
+								files.add((new File(textField_7.getText())));
 							//files.add((new File(dir + File.separator + nom + ".bat")));
-							/*if (comboBox.getSelectedItem().equals("WINDOWS")
+							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem()
 											.equals("X86_64"))
 								CondorUtils.submitJob(dir, files, new File(dir
@@ -1958,13 +1960,13 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.UNIX, Arch.INTEL, description);*/
+										OS.UNIX, Arch.INTEL, description);
 						} catch (IOException e) {
 							e.printStackTrace();
-						} /*catch (SQLException e) {
+						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}*/ catch (BadLocationException e) {
+						} catch (BadLocationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -1974,6 +1976,11 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 			}
 		} else {
 			for (int j = 0; j < folders.size(); j++) {
+				if(comboBox_2.getSelectedItem().equals("Patient")){
+					dossier_filtre.clear();
+					dossier_filtre.add(folders.get(j).toString());
+				}
+				
 				Long time = System.nanoTime();
 				String nom = "job_" + time.toString();
 				File dir = new File(textField_8.getText());
@@ -2043,7 +2050,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							+ folders.get(j).getName() + "\n" + desc;
 					ArrayList<File> files = new ArrayList<>();
 					files.add((new File(dir + File.separator + nom + ".m")));
-					//files.add((new File(dir + File.separator + nom + ".bat")));
+					if(!textField_7.getText().isEmpty())
+						files.add((new File(textField_7.getText())));
 					if (comboBox.getSelectedItem().equals("WINDOWS")
 							&& comboBox_1.getSelectedItem().equals("X86_64"))
 						CondorUtils.submitJob(dir, files, new File(dir

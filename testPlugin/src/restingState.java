@@ -45,7 +45,7 @@ import display.MainWindow;
 public class restingState implements FolderProcessingPlugins {
 	private JFrame frame;
 	private String title = "Resting State ";
-	private JTextField textField;
+	private JTextField textField_15;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -114,7 +114,7 @@ public class restingState implements FolderProcessingPlugins {
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "Resting State2";
+		return "Resting State";
 	}
 
 	public String actionOnFolders(ArrayList<File> folders,
@@ -213,10 +213,10 @@ public class restingState implements FolderProcessingPlugins {
 		ImageIcon icon2 = new ImageIcon(newimg);
 		txt = "(matlabroot)" + File.separator + "toolbox" + File.separator
 				+ "FieldMap" + File.separator + "pm_defaults_skyra.m";
-		textField = new JTextField(txt);
-		textField.setVisible(false);
-		panel.add(textField, "cell 3 4,growx");
-		textField.setColumns(10);
+		textField_15 = new JTextField("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m");
+		textField_15.setVisible(false);
+		panel.add(textField_15, "cell 3 4,growx");
+		textField_15.setColumns(10);
 		btnSelect = new JButton(icon2);
 		btnSelect.setVisible(false);
 		panel.add(btnSelect, "cell 4 2");
@@ -306,7 +306,7 @@ public class restingState implements FolderProcessingPlugins {
 		panel_5.add(lblVox, "cell 1 1");
 
 		textField_12 = new JTextField();
-		textField_12.setText("2.4 2.4 3");
+		textField_12.setText("2 2 2");
 		panel_5.add(textField_12, "cell 2 1");
 		textField_12.setColumns(10);
 
@@ -441,7 +441,7 @@ public class restingState implements FolderProcessingPlugins {
 				int retval = fc.showOpenDialog(null);
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
-					textField.setText(file.getAbsolutePath());
+					textField_15.setText(file.getAbsolutePath());
 				}
 			}
 		});
@@ -482,7 +482,7 @@ public class restingState implements FolderProcessingPlugins {
 					lblCheckIfYou.setEnabled(false);
 					if (chckbx_1.isSelected()) {
 						if (verifier.verify2(textField_7)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -515,7 +515,7 @@ public class restingState implements FolderProcessingPlugins {
 								&& verifier.verify(textField_9)
 								&& verifier.verify(textField_10)
 								&& verifier.verify2(textField_8)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -557,24 +557,24 @@ public class restingState implements FolderProcessingPlugins {
 		chckbx_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (((JCheckBox) e.getSource()).isSelected()) {
-					textField.setVisible(true);
+					textField_15.setVisible(true);
 					btnSelect_1.setVisible(true);
 					chckbx_4.setEnabled(false);
 					lblCheckIfYou_1.setEnabled(false);
 					if (chckbx.isSelected()) {
-						if (verifier.verify2(textField)
+						if (verifier.verify2(textField_15)
 								&& verifier.verify2(textField_7))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
 					} else if (chckbx_2.isSelected()) {
-						if (verifier.verify2(textField)
+						if (verifier.verify2(textField_15)
 								&& verifier.verify2(textField_11))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
 					} else {
-						if (verifier.verify2(textField))
+						if (verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -628,7 +628,7 @@ public class restingState implements FolderProcessingPlugins {
 						else
 							btnOk.setEnabled(false);
 					}
-					textField.setVisible(false);
+					textField_15.setVisible(false);
 					btnSelect_1.setVisible(false);
 					chckbx_4.setEnabled(true);
 					lblCheckIfYou_1.setEnabled(true);
@@ -648,7 +648,7 @@ public class restingState implements FolderProcessingPlugins {
 							btnOk.setEnabled(false);
 					} else if (chckbx_1.isSelected()) {
 						if (verifier.verify2(textField_11)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -689,7 +689,7 @@ public class restingState implements FolderProcessingPlugins {
 								&& verifier.verify(textField_9)
 								&& verifier.verify(textField_10)
 								&& verifier.verify2(textField_8)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -730,12 +730,12 @@ public class restingState implements FolderProcessingPlugins {
 		chckbx_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (((JCheckBox) e.getSource()).isSelected()) {
-					textField.setEnabled(false);
+					textField_15.setEnabled(false);
 					btnSelect.setEnabled(false);
 					lblPresubstractPhaseAnd.setEnabled(false);
 					chckbx_1.setEnabled(false);
 				} else {
-					textField.setEnabled(true);
+					textField_15.setEnabled(true);
 					btnSelect.setEnabled(true);
 					lblPresubstractPhaseAnd.setEnabled(true);
 					chckbx_1.setEnabled(true);
@@ -744,6 +744,7 @@ public class restingState implements FolderProcessingPlugins {
 		});
 		textField_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
+				So(Integer.parseInt(textField_1.getText()));
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
 							&& verifier.verify2(textField_2)
@@ -772,7 +773,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -840,7 +841,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -908,7 +909,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -976,7 +977,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1044,7 +1045,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1112,7 +1113,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1180,7 +1181,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1248,7 +1249,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1316,7 +1317,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1384,7 +1385,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1422,7 +1423,7 @@ public class restingState implements FolderProcessingPlugins {
 				}
 			}
 		});
-		textField.addCaretListener(new CaretListener() {
+		textField_15.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
@@ -1436,7 +1437,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField)
+							&& verifier.verify2(textField_15)
 							&& verifier.verify2(textField_7))
 						btnOk.setEnabled(true);
 					else
@@ -1453,7 +1454,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField)
+							&& verifier.verify2(textField_15)
 							&& verifier.verify2(textField_11))
 						btnOk.setEnabled(true);
 					else
@@ -1470,7 +1471,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1492,7 +1493,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
 							&& verifier.verify2(textField_7)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1564,7 +1565,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
 							&& verifier.verify2(textField_11)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1617,7 +1618,7 @@ public class restingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1683,7 +1684,6 @@ public class restingState implements FolderProcessingPlugins {
 		ArrayList<String> dossier_filtre = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
-		Boolean filt=false;
 		if (structure.equals(FolderStructure.PatDatSer)
 				|| structure.equals(FolderStructure.PatDatProtSer)) {
 			for (int j = 0; j < folders.size(); j++) {
@@ -1692,9 +1692,11 @@ public class restingState implements FolderProcessingPlugins {
 					dossier_filtre.clear();
 					dossier_filtre.add(folders.get(j).toString());
 				}
-				else if(comboBox_2.getSelectedItem().equals("Date"))
-						dossier_filtre=subdir;
-				for (int i = 0; i < subdir.size(); i++) {
+				else if(comboBox_2.getSelectedItem().equals("Date")){
+					dossier_filtre=subdir;
+				}
+				
+				for (int i = 0; i < subdir.size(); i++) {	
 					if(comboBox_2.getSelectedItem().equals("Protocol")){
 						path_ss_dossier=findFiles2(folders.get(j).toString());
 						dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
@@ -1711,17 +1713,11 @@ public class restingState implements FolderProcessingPlugins {
 							path_ss_dossier=findFiles2(folders.get(j).toString());
 							dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
 					}
-				}
-			}
-			for (int k = 0; k < dossier_filtre.size(); k++) {
-				System.out.println(k+" : "+dossier_filtre.get(k).toString());
-				if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
-					filt=true;
-				System.out.println(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"));
-			}
-			for (int j = 0; j < folders.size(); j++) {
-				subdir=findFiles(folders.get(j).toString());
-				for (int i = 0; i < subdir.size(); i++) {	
+					Boolean filt=false;
+					for (int k = 0; k < dossier_filtre.size(); k++) {
+						if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
+							filt=true;
+					}
 					if(textField_14.getText().isEmpty()) {
 					Long time = System.nanoTime();
 					String nom = "job_" + time.toString();
@@ -1751,10 +1747,10 @@ public class restingState implements FolderProcessingPlugins {
 								line = line.replace("#3#", "2");
 							else
 								line = line.replace("#3#", "1");
-							if (textField.getText().equals(txt))
+							if (textField_15.getText().equals(txt))
 								line = line.replace("#17#", "1");
 							else {
-								line = line.replace("#4#", textField.getText());
+								line = line.replace("#4#", textField_15.getText());
 								line = line.replace("#17#", "0");
 							}
 							line = line.replace("#5#", textField_1.getText());
@@ -1807,7 +1803,11 @@ public class restingState implements FolderProcessingPlugins {
 						ArrayList<File> files = new ArrayList<>();
 						files.add((new File(dir + File.separator + nom + ".m")));
 						//files.add((new File(dir + File.separator + nom + ".bat")));
-						/*if (comboBox.getSelectedItem().equals("WINDOWS")
+						if(!textField_7.getText().isEmpty())
+							files.add((new File(textField_7.getText())));
+						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+							files.add((new File(textField_15.getText())));
+						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem()
 										.equals("X86_64"))
 							CondorUtils.submitJob(dir, files, new File(dir
@@ -1836,18 +1836,18 @@ public class restingState implements FolderProcessingPlugins {
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.INTEL, description);*/
+									OS.UNIX, Arch.INTEL, description);
 					} catch (IOException e) {
 						e.printStackTrace();
-					} /*catch (SQLException e) {
+					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}*/ catch (BadLocationException e) {
+					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					}
-					else {if(dossier_filtre.get(i).matches("(.*)"+textField_14.getText()+"(.*)")) {
+					else {if(filt) {
 						Long time = System.nanoTime();
 						String nom = "job_" + time.toString();
 						File dir = new File(textField_8.getText());
@@ -1876,10 +1876,10 @@ public class restingState implements FolderProcessingPlugins {
 									line = line.replace("#3#", "2");
 								else
 									line = line.replace("#3#", "1");
-								if (textField.getText().equals(txt))
+								if (textField_15.getText().equals(txt))
 									line = line.replace("#17#", "1");
 								else {
-									line = line.replace("#4#", textField.getText());
+									line = line.replace("#4#", textField_15.getText());
 									line = line.replace("#17#", "0");
 								}
 								line = line.replace("#5#", textField_1.getText());
@@ -1931,8 +1931,12 @@ public class restingState implements FolderProcessingPlugins {
 							
 							ArrayList<File> files = new ArrayList<>();
 							files.add((new File(dir + File.separator + nom + ".m")));
+							if(!textField_7.getText().isEmpty())
+								files.add((new File(textField_7.getText())));
 							//files.add((new File(dir + File.separator + nom + ".bat")));
-							/*if (comboBox.getSelectedItem().equals("WINDOWS")
+							if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+								files.add((new File(textField_15.getText())));
+							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem()
 											.equals("X86_64"))
 								CondorUtils.submitJob(dir, files, new File(dir
@@ -1961,13 +1965,13 @@ public class restingState implements FolderProcessingPlugins {
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.UNIX, Arch.INTEL, description);*/
+										OS.UNIX, Arch.INTEL, description);
 						} catch (IOException e) {
 							e.printStackTrace();
-						} /*catch (SQLException e) {
+						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}*/ catch (BadLocationException e) {
+						} catch (BadLocationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -1977,6 +1981,11 @@ public class restingState implements FolderProcessingPlugins {
 			}
 		} else {
 			for (int j = 0; j < folders.size(); j++) {
+				if(comboBox_2.getSelectedItem().equals("Patient")){
+					dossier_filtre.clear();
+					dossier_filtre.add(folders.get(j).toString());
+				}
+				
 				Long time = System.nanoTime();
 				String nom = "job_" + time.toString();
 				File dir = new File(textField_8.getText());
@@ -2002,10 +2011,10 @@ public class restingState implements FolderProcessingPlugins {
 							line = line.replace("#3#", "2");
 						else
 							line = line.replace("#3#", "1");
-						if (textField.getText().equals(txt))
+						if (textField_15.getText().equals(txt))
 							line = line.replace("#17#", "1");
 						else {
-							line = line.replace("#4#", textField.getText());
+							line = line.replace("#4#", textField_15.getText());
 							line = line.replace("#17#", "0");
 						}
 						line = line.replace("#5#", textField_1.getText());
@@ -2046,7 +2055,8 @@ public class restingState implements FolderProcessingPlugins {
 							+ folders.get(j).getName() + "\n" + desc;
 					ArrayList<File> files = new ArrayList<>();
 					files.add((new File(dir + File.separator + nom + ".m")));
-					//files.add((new File(dir + File.separator + nom + ".bat")));
+					if(!textField_7.getText().isEmpty())
+						files.add((new File(textField_7.getText())));
 					if (comboBox.getSelectedItem().equals("WINDOWS")
 							&& comboBox_1.getSelectedItem().equals("X86_64"))
 						CondorUtils.submitJob(dir, files, new File(dir
@@ -2220,5 +2230,15 @@ public class restingState implements FolderProcessingPlugins {
 				}
 			}
 		}
+	}
+	private void So(int nb){
+		String res = null;
+		for(int i=1;i<nb;i=i+2){
+			res=res+i;
+			
+		}
+		System.out.println(res);
+		//return null;
+		
 	}
 }

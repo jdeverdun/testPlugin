@@ -1,3 +1,4 @@
+import java.awt.CheckboxGroup;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -41,11 +43,15 @@ import tools.cluster.condor.CondorUtils;
 import tools.cluster.condor.CondorUtils.Arch;
 import tools.cluster.condor.CondorUtils.OS;
 import display.MainWindow;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JFrame frame;
 	private String title = "Resting State ";
-	private JTextField textField;
+	private JTextField textField_15;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -105,6 +111,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JTextField textField_14;
 	private JLabel filtre;
 	private JComboBox<String> comboBox_2;
+	private JCheckBox chckbx_5;
+	private JCheckBox chckbx_6;
 	
 	@Override
 	public PluginCategory getCategory() {
@@ -213,10 +221,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		ImageIcon icon2 = new ImageIcon(newimg);
 		txt = "(matlabroot)" + File.separator + "toolbox" + File.separator
 				+ "FieldMap" + File.separator + "pm_defaults_skyra.m";
-		textField = new JTextField(txt);
-		textField.setVisible(false);
-		panel.add(textField, "cell 3 4,growx");
-		textField.setColumns(10);
+		textField_15 = new JTextField("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m");
+		textField_15.setVisible(false);
+		panel.add(textField_15, "cell 3 4,growx");
+		textField_15.setColumns(10);
 		btnSelect = new JButton(icon2);
 		btnSelect.setVisible(false);
 		panel.add(btnSelect, "cell 4 2");
@@ -246,6 +254,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		textField_1.setText("39");
 		panel_1.add(textField_1, "cell 2 0");
 		textField_1.setColumns(10);
+		chckbx_5 = new JCheckBox("Entrelace");
+		panel_1.add(chckbx_5, "flowx,cell 3 0,alignx center");
 
 		lblTr = new JLabel("Tr");
 		panel_1.add(lblTr, "cell 1 1");
@@ -279,7 +289,12 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		textField_5.setText("39");
 		textField_5.setColumns(10);
 		panel_1.add(textField_5, "cell 2 4");
-
+		
+		chckbx_6 = new JCheckBox("Non entrelacet");
+		panel_1.add(chckbx_6, "cell 3 0");
+		ButtonGroup group = new ButtonGroup();
+		group.add(chckbx_5);
+        group.add(chckbx_6);
 		panel_5 = new JPanel();
 		panel_5.setBorder(new TitledBorder(null, "Normalisation",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -306,7 +321,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		panel_5.add(lblVox, "cell 1 1");
 
 		textField_12 = new JTextField();
-		textField_12.setText("2.4 2.4 3");
+		textField_12.setText("2 2 2");
 		panel_5.add(textField_12, "cell 2 1");
 		textField_12.setColumns(10);
 
@@ -441,7 +456,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				int retval = fc.showOpenDialog(null);
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
-					textField.setText(file.getAbsolutePath());
+					textField_15.setText(file.getAbsolutePath());
 				}
 			}
 		});
@@ -482,7 +497,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					lblCheckIfYou.setEnabled(false);
 					if (chckbx_1.isSelected()) {
 						if (verifier.verify2(textField_7)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -515,7 +530,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 								&& verifier.verify(textField_9)
 								&& verifier.verify(textField_10)
 								&& verifier.verify2(textField_8)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -557,24 +572,24 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		chckbx_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (((JCheckBox) e.getSource()).isSelected()) {
-					textField.setVisible(true);
+					textField_15.setVisible(true);
 					btnSelect_1.setVisible(true);
 					chckbx_4.setEnabled(false);
 					lblCheckIfYou_1.setEnabled(false);
 					if (chckbx.isSelected()) {
-						if (verifier.verify2(textField)
+						if (verifier.verify2(textField_15)
 								&& verifier.verify2(textField_7))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
 					} else if (chckbx_2.isSelected()) {
-						if (verifier.verify2(textField)
+						if (verifier.verify2(textField_15)
 								&& verifier.verify2(textField_11))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
 					} else {
-						if (verifier.verify2(textField))
+						if (verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -628,7 +643,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						else
 							btnOk.setEnabled(false);
 					}
-					textField.setVisible(false);
+					textField_15.setVisible(false);
 					btnSelect_1.setVisible(false);
 					chckbx_4.setEnabled(true);
 					lblCheckIfYou_1.setEnabled(true);
@@ -648,7 +663,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							btnOk.setEnabled(false);
 					} else if (chckbx_1.isSelected()) {
 						if (verifier.verify2(textField_11)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -689,7 +704,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 								&& verifier.verify(textField_9)
 								&& verifier.verify(textField_10)
 								&& verifier.verify2(textField_8)
-								&& verifier.verify2(textField))
+								&& verifier.verify2(textField_15))
 							btnOk.setEnabled(true);
 						else
 							btnOk.setEnabled(false);
@@ -730,20 +745,30 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		chckbx_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (((JCheckBox) e.getSource()).isSelected()) {
-					textField.setEnabled(false);
+					textField_15.setEnabled(false);
 					btnSelect.setEnabled(false);
 					lblPresubstractPhaseAnd.setEnabled(false);
 					chckbx_1.setEnabled(false);
 				} else {
-					textField.setEnabled(true);
+					textField_15.setEnabled(true);
 					btnSelect.setEnabled(true);
 					lblPresubstractPhaseAnd.setEnabled(true);
 					chckbx_1.setEnabled(true);
 				}
 			}
 		});
+		chckbx_5.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if(arg0.getStateChange()==1)
+					So(Integer.parseInt(textField_1.getText()),0);
+				else
+					So(Integer.parseInt(textField_1.getText()),1);
+			}
+		});
 		textField_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
+				chckbx_5.setSelected(false);
+				chckbx_6.setSelected(false);
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
 							&& verifier.verify2(textField_2)
@@ -772,7 +797,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -840,7 +865,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -908,7 +933,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -976,7 +1001,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1044,7 +1069,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1112,7 +1137,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1180,7 +1205,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1248,7 +1273,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1316,7 +1341,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1384,7 +1409,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1422,7 +1447,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				}
 			}
 		});
-		textField.addCaretListener(new CaretListener() {
+		textField_15.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
@@ -1436,7 +1461,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField)
+							&& verifier.verify2(textField_15)
 							&& verifier.verify2(textField_7))
 						btnOk.setEnabled(true);
 					else
@@ -1453,7 +1478,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField)
+							&& verifier.verify2(textField_15)
 							&& verifier.verify2(textField_11))
 						btnOk.setEnabled(true);
 					else
@@ -1470,7 +1495,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1492,7 +1517,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
 							&& verifier.verify2(textField_7)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1564,7 +1589,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
 							&& verifier.verify2(textField_11)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1617,7 +1642,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							&& verifier.verify(textField_9)
 							&& verifier.verify(textField_10)
 							&& verifier.verify2(textField_8)
-							&& verifier.verify2(textField))
+							&& verifier.verify2(textField_15))
 						btnOk.setEnabled(true);
 					else
 						btnOk.setEnabled(false);
@@ -1746,10 +1771,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 								line = line.replace("#3#", "2");
 							else
 								line = line.replace("#3#", "1");
-							if (textField.getText().equals(txt))
+							if (textField_15.getText().equals(txt))
 								line = line.replace("#17#", "1");
 							else {
-								line = line.replace("#4#", textField.getText());
+								line = line.replace("#4#", textField_15.getText());
 								line = line.replace("#17#", "0");
 							}
 							line = line.replace("#5#", textField_1.getText());
@@ -1804,6 +1829,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						//files.add((new File(dir + File.separator + nom + ".bat")));
 						if(!textField_7.getText().isEmpty())
 							files.add((new File(textField_7.getText())));
+						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+							files.add((new File(textField_15.getText())));
 						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem()
 										.equals("X86_64"))
@@ -1873,10 +1900,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 									line = line.replace("#3#", "2");
 								else
 									line = line.replace("#3#", "1");
-								if (textField.getText().equals(txt))
+								if (textField_15.getText().equals(txt))
 									line = line.replace("#17#", "1");
 								else {
-									line = line.replace("#4#", textField.getText());
+									line = line.replace("#4#", textField_15.getText());
 									line = line.replace("#17#", "0");
 								}
 								line = line.replace("#5#", textField_1.getText());
@@ -1931,6 +1958,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							if(!textField_7.getText().isEmpty())
 								files.add((new File(textField_7.getText())));
 							//files.add((new File(dir + File.separator + nom + ".bat")));
+							if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+								files.add((new File(textField_15.getText())));
 							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem()
 											.equals("X86_64"))
@@ -2006,10 +2035,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							line = line.replace("#3#", "2");
 						else
 							line = line.replace("#3#", "1");
-						if (textField.getText().equals(txt))
+						if (textField_15.getText().equals(txt))
 							line = line.replace("#17#", "1");
 						else {
-							line = line.replace("#4#", textField.getText());
+							line = line.replace("#4#", textField_15.getText());
 							line = line.replace("#17#", "0");
 						}
 						line = line.replace("#5#", textField_1.getText());
@@ -2052,6 +2081,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					files.add((new File(dir + File.separator + nom + ".m")));
 					if(!textField_7.getText().isEmpty())
 						files.add((new File(textField_7.getText())));
+					if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+						files.add((new File(textField_15.getText())));
 					if (comboBox.getSelectedItem().equals("WINDOWS")
 							&& comboBox_1.getSelectedItem().equals("X86_64"))
 						CondorUtils.submitJob(dir, files, new File(dir
@@ -2225,5 +2256,32 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				}
 			}
 		}
+	}
+	private void So(int nb,int e){
+		String res = "";
+		if(e==0){
+			for(int i=1;i<=nb;i=i+2){
+				res=res+i+" ";
+			}
+			for(int i=0;i<=nb;i=i+2){
+				if(i==0)
+					res=res+i;
+				else
+					res=res+" "+i;
+
+			}
+		}
+		else
+		{
+			for(int i=0;i<=nb;i++){
+				if(i==0)
+					res=res+i;
+				else
+					res=res+" "+i;
+			}
+		}
+		System.out.println(res);
+		//return null;
+
 	}
 }

@@ -114,7 +114,7 @@ public class restingState implements FolderProcessingPlugins {
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "Resting State";
+		return "Resting State2";
 	}
 
 	public String actionOnFolders(ArrayList<File> folders,

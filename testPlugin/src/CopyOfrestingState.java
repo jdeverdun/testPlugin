@@ -251,6 +251,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		panel_1.add(lblNslices, "cell 1 0");
 
 		textField_1 = new JTextField();
+	
 		textField_1.setText("39");
 		panel_1.add(textField_1, "cell 2 0");
 		textField_1.setColumns(10);
@@ -292,7 +293,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		
 		chckbx_6 = new JCheckBox("Non entrelacet");
 		panel_1.add(chckbx_6, "cell 3 0");
-		ButtonGroup group = new ButtonGroup();
+		final ButtonGroup group = new ButtonGroup();
 		group.add(chckbx_5);
         group.add(chckbx_6);
 		panel_5 = new JPanel();
@@ -762,13 +763,12 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				if(arg0.getStateChange()==1)
 					So(Integer.parseInt(textField_1.getText()),0);
 				else
-					So(Integer.parseInt(textField_1.getText()),1);
+					So(Integer.parseInt(textField_1.getText()),1);	
 			}
 		});
 		textField_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
-				chckbx_5.setSelected(false);
-				chckbx_6.setSelected(false);
+				group.clearSelection();
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
 							&& verifier.verify2(textField_2)
@@ -1831,6 +1831,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							files.add((new File(textField_7.getText())));
 						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
 							files.add((new File(textField_15.getText())));
+						if(!textField_11.getText().isEmpty())
+							files.add((new File(textField_11.getText())));
 						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem()
 										.equals("X86_64"))
@@ -1960,6 +1962,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							//files.add((new File(dir + File.separator + nom + ".bat")));
 							if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
 								files.add((new File(textField_15.getText())));
+							if(!textField_11.getText().isEmpty())
+								files.add((new File(textField_11.getText())));
 							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem()
 											.equals("X86_64"))
@@ -2083,6 +2087,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						files.add((new File(textField_7.getText())));
 					if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
 						files.add((new File(textField_15.getText())));
+					if(!textField_11.getText().isEmpty())
+						files.add((new File(textField_11.getText())));
 					if (comboBox.getSelectedItem().equals("WINDOWS")
 							&& comboBox_1.getSelectedItem().equals("X86_64"))
 						CondorUtils.submitJob(dir, files, new File(dir
@@ -2205,14 +2211,14 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		public void insertString(final FilterBypass fb, final int offset,
 				final String string, AttributeSet attr)
 				throws BadLocationException {
-			if (offset >= desc_1.length() && offset <= 50) {
+			if (offset >= desc_1.length() && offset <= 80) {
 				super.insertString(fb, offset, string, attr);
 			}
 		}
 
 		public void remove(final FilterBypass fb, final int offset,
 				final int length) throws BadLocationException {
-			if (offset >= desc_1.length() && offset <= 50) {
+			if (offset >= desc_1.length() && offset <= 80) {
 				super.remove(fb, offset, length);
 			}
 		}
@@ -2221,7 +2227,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				final int length, final String text, final AttributeSet attrs)
 				throws BadLocationException {
 
-			if (offset >= desc_1.length() && offset <= 50) {
+			if (offset >= desc_1.length() && offset <= 80) {
 				super.replace(fb, offset, length, text, attrs);
 			}
 		}
@@ -2251,7 +2257,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			} else {
-				if (offset >= desc_2.length() && offset < 59) {
+				if (offset >= desc_2.length() && offset < 80) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
@@ -2268,7 +2274,6 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					res=res+i;
 				else
 					res=res+" "+i;
-
 			}
 		}
 		else
@@ -2280,8 +2285,6 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					res=res+" "+i;
 			}
 		}
-		System.out.println(res);
-		//return null;
-
+		textField_4.setText(res);
 	}
 }

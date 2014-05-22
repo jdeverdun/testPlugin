@@ -1706,8 +1706,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 			FolderStructure structure) {
 		ArrayList<String> subdir = new ArrayList<String>();
 		ArrayList<String> dossier_filtre = new ArrayList<String>();
+		ArrayList<String> dossier_filtre2 = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
+		Boolean filt=false;
 		if (structure.equals(FolderStructure.PatDatSer)
 				|| structure.equals(FolderStructure.PatDatProtSer)) {
 			for (int j = 0; j < folders.size(); j++) {
@@ -1716,12 +1718,15 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					dossier_filtre.clear();
 					dossier_filtre.add(folders.get(j).toString());
 				}
-				else if(comboBox_2.getSelectedItem().equals("Date")){
-					dossier_filtre=subdir;
-				}
 				
 				for (int i = 0; i < subdir.size(); i++) {	
-					if(comboBox_2.getSelectedItem().equals("Protocol")){
+					if(comboBox_2.getSelectedItem().equals("Date")){
+						if(subdir.get(i).matches("(.*)"+textField_14.getText()+"(.*)"))
+							filt=true;
+						else 
+							filt=false;
+					}
+					else if(comboBox_2.getSelectedItem().equals("Protocol")){
 						path_ss_dossier=findFiles2(folders.get(j).toString());
 						dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
 					}
@@ -1737,10 +1742,12 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							path_ss_dossier=findFiles2(folders.get(j).toString());
 							dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
 					}
-					Boolean filt=false;
+					
 					for (int k = 0; k < dossier_filtre.size(); k++) {
 						if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
 							filt=true;
+						else 
+							filt=false;
 					}
 					if(textField_14.getText().isEmpty()) {
 					Long time = System.nanoTime();

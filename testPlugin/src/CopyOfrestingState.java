@@ -1692,26 +1692,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final JDialog dlg = new JDialog(frame, "Processing", true);
-			    JProgressBar dpb = new JProgressBar();
-			    dpb.setIndeterminate(true);
-			    dlg.add(BorderLayout.CENTER, dpb);
-			    dlg.add(BorderLayout.NORTH, new JLabel("Submitting..."));
-			    dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			    dlg.setSize(300, 75);
-			    dlg.setLocationRelativeTo(frame);
-				Thread thread = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						createMatlabAndBashFiles(folders, structure);
-						dlg.dispose();
-						frame.dispose();
-					}
-				});
-				thread.start();
-				
-				
+				createMatlabAndBashFiles(folders, structure);
+				frame.dispose();
 			}
 		});
 		frame.getRootPane().setDefaultButton(btnOk);

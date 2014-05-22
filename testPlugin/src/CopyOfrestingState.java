@@ -368,8 +368,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		lblPathWhereAre = new JLabel("Path where are created jobs files");
 		panel_4.add(lblPathWhereAre, "cell 1 0");
 
-		textField_8 = new JTextField(SystemSettings.APP_DIR.toString()
-				+ File.separator + ServerInfo.CONDOR_JOB_DIR_NAME);
+		textField_8 = new JTextField(SystemSettings.SERVER_INFO.getCondorJobDir().toString());
 		panel_4.add(textField_8, "cell 2 0 2 1,growx");
 		textField_8.setColumns(10);
 
@@ -441,7 +440,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		btnClose = new JButton("Close");
 		panel_3.add(btnClose, "cell 1 0,growx");
-
+		
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -767,14 +766,19 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		});
 		chckbx_5.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-				if(arg0.getStateChange()==1)
 					So(Integer.parseInt(textField_1.getText()),0);
-				else
+			}
+		});
+		chckbx_6.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
 					So(Integer.parseInt(textField_1.getText()),1);	
 			}
 		});
+		
 		textField_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
+				if(!textField_1.getText().isEmpty() && !textField_2.getText().isEmpty() && !textField_1.getText().equals("0") && !textField_2.getText().equals("0"))
+					Ta(Integer.parseInt(textField_1.getText()), Float.parseFloat(textField_2.getText()));
 				group.clearSelection();
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
@@ -844,6 +848,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		});
 		textField_2.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
+				if(!textField_1.getText().isEmpty() && !textField_2.getText().isEmpty() && !textField_1.getText().equals("0") && !textField_2.getText().equals("0"))
+					Ta(Integer.parseInt(textField_1.getText()), Float.parseFloat(textField_2.getText()));
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
 							&& verifier.verify2(textField_2)
@@ -2286,12 +2292,16 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	}
 	private void So(int nb,int e){
 		String res = "";
+		String res2 = "";
+		int i=0;
+		int j=0;
 		if(e==0){
-			for(int i=1;i<=nb;i=i+2){
+			for(i=1;i<=nb;i=i+2){
 				res=res+i+" ";
+				res2=""+i;
 			}
-			for(int i=0;i<=nb;i=i+2){
-				if(i==0)
+			for(i=2;i<=nb;i=i+2){
+				if(i==2)
 					res=res+i;
 				else
 					res=res+" "+i;
@@ -2299,13 +2309,23 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		}
 		else
 		{
-			for(int i=0;i<=nb;i++){
-				if(i==0)
+			for(i=1;i<=nb;i++){
+				if(i==1)
 					res=res+i;
 				else
 					res=res+" "+i;
 			}
+			j=nb/2;
+			res2=""+j;
 		}
+		
 		textField_4.setText(res);
+		textField_5.setText(res2);
+	}
+	private void Ta(int nb,float tr)
+	{
+		float res;
+		res=tr/nb;
+		textField_3.setText(String.format("%.3f", res));
 	}
 }

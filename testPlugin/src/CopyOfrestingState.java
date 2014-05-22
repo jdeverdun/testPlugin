@@ -2325,7 +2325,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private void Ta(int nb,float tr)
 	{
 		float res;
-		res=tr/nb;
+		res=tr-tr/nb;
 		textField_3.setText(String.format("%.3f", res));
 	}
 }

@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.CheckboxGroup;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -114,6 +116,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JCheckBox chckbx_5;
 	private JCheckBox chckbx_6;
 	
+	private boolean isSubmissionDone = false;
+	
 	@Override
 	public PluginCategory getCategory() {
 		return PluginCategory.BatchImageProcessing;
@@ -137,7 +141,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	public void createAndShowGUI(final ArrayList<File> folders,
 			final FolderStructure structure) {
 		frame = new JFrame();
-
+		isSubmissionDone = false;
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(800, 860);
 		frame.setTitle(title);
@@ -1688,8 +1692,26 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				createMatlabAndBashFiles(folders, structure);
-				frame.dispose();
+				final JDialog dlg = new JDialog(frame, "Processing", true);
+			    JProgressBar dpb = new JProgressBar();
+			    dpb.setIndeterminate(true);
+			    dlg.add(BorderLayout.CENTER, dpb);
+			    dlg.add(BorderLayout.NORTH, new JLabel("Submitting..."));
+			    dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			    dlg.setSize(300, 75);
+			    dlg.setLocationRelativeTo(frame);
+				Thread thread = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						createMatlabAndBashFiles(folders, structure);
+						dlg.dispose();
+						frame.dispose();
+					}
+				});
+				thread.start();
+				
+				
 			}
 		});
 		frame.getRootPane().setDefaultButton(btnOk);

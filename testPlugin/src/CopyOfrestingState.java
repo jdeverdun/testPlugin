@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -41,10 +42,12 @@ import model.ServerInfo;
 import net.miginfocom.swing.MigLayout;
 import plugins.FolderProcessingPlugins;
 import settings.SystemSettings;
+import settings.WindowManager;
 import tools.cluster.condor.CondorUtils;
 import tools.cluster.condor.CondorUtils.Arch;
 import tools.cluster.condor.CondorUtils.OS;
 import display.MainWindow;
+
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.ItemListener;
@@ -1692,7 +1695,12 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				try{
 				createMatlabAndBashFiles(folders, structure);
+				}catch (Exception e){
+					e.printStackTrace();
+					WindowManager.mwLogger.log(Level.SEVERE, "Error to create submit files",e);
+				}
 				frame.dispose();
 			}
 		});
@@ -1710,7 +1718,6 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 			FolderStructure structure) {
 		ArrayList<String> subdir = new ArrayList<String>();
 		ArrayList<String> dossier_filtre = new ArrayList<String>();
-		ArrayList<String> dossier_filtre2 = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
 		Boolean filt=false;
@@ -1876,6 +1883,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 									OS.UNIX, Arch.INTEL, description);
 					} catch (IOException e) {
 						e.printStackTrace();
+						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -2007,6 +2015,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										OS.UNIX, Arch.INTEL, description);
 						} catch (IOException e) {
 							e.printStackTrace();
+							WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -2130,6 +2139,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 								OS.UNIX, Arch.INTEL, description);
 				} catch (IOException e) {
 					e.printStackTrace();
+					WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

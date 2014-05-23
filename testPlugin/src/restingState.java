@@ -1,3 +1,5 @@
+import java.awt.BorderLayout;
+import java.awt.CheckboxGroup;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +12,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -21,6 +25,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -37,10 +42,16 @@ import model.ServerInfo;
 import net.miginfocom.swing.MigLayout;
 import plugins.FolderProcessingPlugins;
 import settings.SystemSettings;
+import settings.WindowManager;
 import tools.cluster.condor.CondorUtils;
 import tools.cluster.condor.CondorUtils.Arch;
 import tools.cluster.condor.CondorUtils.OS;
 import display.MainWindow;
+
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class restingState implements FolderProcessingPlugins {
 	private JFrame frame;
@@ -105,6 +116,10 @@ public class restingState implements FolderProcessingPlugins {
 	private JTextField textField_14;
 	private JLabel filtre;
 	private JComboBox<String> comboBox_2;
+	private JCheckBox chckbx_5;
+	private JCheckBox chckbx_6;
+	
+	private boolean isSubmissionDone = false;
 	
 	@Override
 	public PluginCategory getCategory() {
@@ -129,7 +144,7 @@ public class restingState implements FolderProcessingPlugins {
 	public void createAndShowGUI(final ArrayList<File> folders,
 			final FolderStructure structure) {
 		frame = new JFrame();
-
+		isSubmissionDone = false;
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(800, 860);
 		frame.setTitle(title);
@@ -243,9 +258,12 @@ public class restingState implements FolderProcessingPlugins {
 		panel_1.add(lblNslices, "cell 1 0");
 
 		textField_1 = new JTextField();
+	
 		textField_1.setText("39");
 		panel_1.add(textField_1, "cell 2 0");
 		textField_1.setColumns(10);
+		chckbx_5 = new JCheckBox("Entrelace");
+		panel_1.add(chckbx_5, "flowx,cell 3 0,alignx center");
 
 		lblTr = new JLabel("Tr");
 		panel_1.add(lblTr, "cell 1 1");
@@ -279,7 +297,12 @@ public class restingState implements FolderProcessingPlugins {
 		textField_5.setText("39");
 		textField_5.setColumns(10);
 		panel_1.add(textField_5, "cell 2 4");
-
+		
+		chckbx_6 = new JCheckBox("Non entrelacet");
+		panel_1.add(chckbx_6, "cell 3 0");
+		final ButtonGroup group = new ButtonGroup();
+		group.add(chckbx_5);
+        group.add(chckbx_6);
 		panel_5 = new JPanel();
 		panel_5.setBorder(new TitledBorder(null, "Normalisation",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -345,8 +368,7 @@ public class restingState implements FolderProcessingPlugins {
 		lblPathWhereAre = new JLabel("Path where are created jobs files");
 		panel_4.add(lblPathWhereAre, "cell 1 0");
 
-		textField_8 = new JTextField(SystemSettings.APP_DIR.toString()
-				+ File.separator + ServerInfo.CONDOR_JOB_DIR_NAME);
+		textField_8 = new JTextField(SystemSettings.SERVER_INFO.getCondorJobDir().toString());
 		panel_4.add(textField_8, "cell 2 0 2 1,growx");
 		textField_8.setColumns(10);
 
@@ -418,7 +440,7 @@ public class restingState implements FolderProcessingPlugins {
 
 		btnClose = new JButton("Close");
 		panel_3.add(btnClose, "cell 1 0,growx");
-
+		
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -742,9 +764,22 @@ public class restingState implements FolderProcessingPlugins {
 				}
 			}
 		});
+		chckbx_5.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+					So(Integer.parseInt(textField_1.getText()),0);
+			}
+		});
+		chckbx_6.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+					So(Integer.parseInt(textField_1.getText()),1);	
+			}
+		});
+		
 		textField_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
-				So(Integer.parseInt(textField_1.getText()));
+				if(!textField_1.getText().isEmpty() && !textField_2.getText().isEmpty() && !textField_1.getText().equals("0") && !textField_2.getText().equals("0"))
+					Ta(Integer.parseInt(textField_1.getText()), Float.parseFloat(textField_2.getText()));
+				group.clearSelection();
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
 							&& verifier.verify2(textField_2)
@@ -813,6 +848,8 @@ public class restingState implements FolderProcessingPlugins {
 		});
 		textField_2.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
+				if(!textField_1.getText().isEmpty() && !textField_2.getText().isEmpty() && !textField_1.getText().equals("0") && !textField_2.getText().equals("0"))
+					Ta(Integer.parseInt(textField_1.getText()), Float.parseFloat(textField_2.getText()));
 				if (chckbx.isSelected()) {
 					if (verifier.verify(textField_1)
 							&& verifier.verify2(textField_2)
@@ -1664,7 +1701,12 @@ public class restingState implements FolderProcessingPlugins {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				try{
 				createMatlabAndBashFiles(folders, structure);
+				}catch (Exception e){
+					e.printStackTrace();
+					WindowManager.mwLogger.log(Level.SEVERE, "Error to create submit files",e);
+				}
 				frame.dispose();
 			}
 		});
@@ -1684,6 +1726,9 @@ public class restingState implements FolderProcessingPlugins {
 		ArrayList<String> dossier_filtre = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier = new ArrayList<String>();
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
+		Boolean filt=false;
+		Boolean filt2=false;
+		int cpt=0;
 		if (structure.equals(FolderStructure.PatDatSer)
 				|| structure.equals(FolderStructure.PatDatProtSer)) {
 			for (int j = 0; j < folders.size(); j++) {
@@ -1692,12 +1737,15 @@ public class restingState implements FolderProcessingPlugins {
 					dossier_filtre.clear();
 					dossier_filtre.add(folders.get(j).toString());
 				}
-				else if(comboBox_2.getSelectedItem().equals("Date")){
-					dossier_filtre=subdir;
-				}
 				
 				for (int i = 0; i < subdir.size(); i++) {	
-					if(comboBox_2.getSelectedItem().equals("Protocol")){
+					if(comboBox_2.getSelectedItem().equals("Date")){
+						if(subdir.get(i).matches("(.*)"+textField_14.getText()+"(.*)"))
+							filt2=true;
+						else 
+							filt2=false;
+					}
+					else if(comboBox_2.getSelectedItem().equals("Protocol")){
 						path_ss_dossier=findFiles2(folders.get(j).toString());
 						dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
 					}
@@ -1713,11 +1761,17 @@ public class restingState implements FolderProcessingPlugins {
 							path_ss_dossier=findFiles2(folders.get(j).toString());
 							dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
 					}
-					Boolean filt=false;
+					filt=false;
 					for (int k = 0; k < dossier_filtre.size(); k++) {
+						
 						if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
+							{
+							System.out.println(dossier_filtre.get(k).toString());
 							filt=true;
+							cpt++;
+							}
 					}
+					System.out.println(cpt);
 					if(textField_14.getText().isEmpty()) {
 					Long time = System.nanoTime();
 					String nom = "job_" + time.toString();
@@ -1807,6 +1861,8 @@ public class restingState implements FolderProcessingPlugins {
 							files.add((new File(textField_7.getText())));
 						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
 							files.add((new File(textField_15.getText())));
+						if(!textField_11.getText().isEmpty())
+							files.add((new File(textField_11.getText())));
 						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem()
 										.equals("X86_64"))
@@ -1839,6 +1895,7 @@ public class restingState implements FolderProcessingPlugins {
 									OS.UNIX, Arch.INTEL, description);
 					} catch (IOException e) {
 						e.printStackTrace();
+						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -1847,7 +1904,7 @@ public class restingState implements FolderProcessingPlugins {
 						e.printStackTrace();
 					}
 					}
-					else {if(filt) {
+					else {if(filt || filt2) {
 						Long time = System.nanoTime();
 						String nom = "job_" + time.toString();
 						File dir = new File(textField_8.getText());
@@ -1936,6 +1993,8 @@ public class restingState implements FolderProcessingPlugins {
 							//files.add((new File(dir + File.separator + nom + ".bat")));
 							if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
 								files.add((new File(textField_15.getText())));
+							if(!textField_11.getText().isEmpty())
+								files.add((new File(textField_11.getText())));
 							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem()
 											.equals("X86_64"))
@@ -1968,6 +2027,7 @@ public class restingState implements FolderProcessingPlugins {
 										OS.UNIX, Arch.INTEL, description);
 						} catch (IOException e) {
 							e.printStackTrace();
+							WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -2057,6 +2117,10 @@ public class restingState implements FolderProcessingPlugins {
 					files.add((new File(dir + File.separator + nom + ".m")));
 					if(!textField_7.getText().isEmpty())
 						files.add((new File(textField_7.getText())));
+					if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+						files.add((new File(textField_15.getText())));
+					if(!textField_11.getText().isEmpty())
+						files.add((new File(textField_11.getText())));
 					if (comboBox.getSelectedItem().equals("WINDOWS")
 							&& comboBox_1.getSelectedItem().equals("X86_64"))
 						CondorUtils.submitJob(dir, files, new File(dir
@@ -2087,6 +2151,7 @@ public class restingState implements FolderProcessingPlugins {
 								OS.UNIX, Arch.INTEL, description);
 				} catch (IOException e) {
 					e.printStackTrace();
+					WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -2179,14 +2244,14 @@ public class restingState implements FolderProcessingPlugins {
 		public void insertString(final FilterBypass fb, final int offset,
 				final String string, AttributeSet attr)
 				throws BadLocationException {
-			if (offset >= desc_1.length() && offset <= 50) {
+			if (offset >= desc_1.length() && offset <= 80) {
 				super.insertString(fb, offset, string, attr);
 			}
 		}
 
 		public void remove(final FilterBypass fb, final int offset,
 				final int length) throws BadLocationException {
-			if (offset >= desc_1.length() && offset <= 50) {
+			if (offset >= desc_1.length() && offset <= 80) {
 				super.remove(fb, offset, length);
 			}
 		}
@@ -2195,7 +2260,7 @@ public class restingState implements FolderProcessingPlugins {
 				final int length, final String text, final AttributeSet attrs)
 				throws BadLocationException {
 
-			if (offset >= desc_1.length() && offset <= 50) {
+			if (offset >= desc_1.length() && offset <= 80) {
 				super.replace(fb, offset, length, text, attrs);
 			}
 		}
@@ -2225,20 +2290,48 @@ public class restingState implements FolderProcessingPlugins {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			} else {
-				if (offset >= desc_2.length() && offset < 59) {
+				if (offset >= desc_2.length() && offset < 80) {
 					super.replace(fb, offset, length, text, attrs);
 				}
 			}
 		}
 	}
-	private void So(int nb){
-		String res = null;
-		for(int i=1;i<nb;i=i+2){
-			res=res+i;
-			
+	private void So(int nb,int e){
+		String res = "";
+		String res2 = "";
+		int i=0;
+		int j=0;
+		if(e==0){
+			for(i=1;i<=nb;i=i+2){
+				res=res+i+" ";
+				res2=""+i;
+			}
+			for(i=2;i<=nb;i=i+2){
+				if(i==2)
+					res=res+i;
+				else
+					res=res+" "+i;
+			}
 		}
-		System.out.println(res);
-		//return null;
+		else
+		{
+			for(i=1;i<=nb;i++){
+				if(i==1)
+					res=res+i;
+				else
+					res=res+" "+i;
+			}
+			j=nb/2;
+			res2=""+j;
+		}
 		
+		textField_4.setText(res);
+		textField_5.setText(res2);
+	}
+	private void Ta(int nb,float tr)
+	{
+		float res;
+		res=tr-tr/nb;
+		textField_3.setText(String.format("%.3f", res));
 	}
 }

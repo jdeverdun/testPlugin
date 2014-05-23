@@ -1766,12 +1766,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						
 						if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
 							{
-							System.out.println(dossier_filtre.get(k).toString());
 							filt=true;
-							cpt++;
 							}
 					}
-					System.out.println(cpt);
 					if(textField_14.getText().isEmpty()) {
 					Long time = System.nanoTime();
 					String nom = "job_" + time.toString();

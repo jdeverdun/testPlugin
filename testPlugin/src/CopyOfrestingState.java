@@ -1836,8 +1836,8 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						writer.close();
 						writer = new BufferedWriter(new FileWriter(new File(dir
 								+ File.separator + nom + ".bat")));
-						writer.write("echo \"%1 %2\"\n");
-						writer.write("\"%1 %2\" -logfile matlablog.log -nodesktop -nosplash -r "
+						writer.write("echo \"%1 %2  %3 %4 %5 %6 %7 %8 %9\"\n");
+						writer.write("\"%1 %2  %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
 								+ nom + "\n");
 						writer.write("exit\n");
 						writer.close();

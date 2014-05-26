@@ -118,9 +118,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JComboBox<String> comboBox_2;
 	private JCheckBox chckbx_5;
 	private JCheckBox chckbx_6;
-	
+
 	private boolean isSubmissionDone = false;
-	
+
 	@Override
 	public PluginCategory getCategory() {
 		return PluginCategory.BatchImageProcessing;
@@ -152,9 +152,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		frame.setIconImage(new ImageIcon(this.getClass().getResource(
 				"/images/logo32.png")).getImage());
 		frame.getContentPane()
-				.setLayout(
-						new MigLayout("", "[grow]",
-								"[112.00,grow][97.00,grow][68.00,grow][53.00,grow][240.00,grow][34.00,grow]"));
+		.setLayout(
+				new MigLayout("", "[grow]",
+						"[112.00,grow][97.00,grow][68.00,grow][53.00,grow][240.00,grow][34.00,grow]"));
 		frame.setVisible(true);
 
 		panel = new JPanel();
@@ -258,7 +258,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		panel_1.add(lblNslices, "cell 1 0");
 
 		textField_1 = new JTextField();
-	
+
 		textField_1.setText("39");
 		panel_1.add(textField_1, "cell 2 0");
 		textField_1.setColumns(10);
@@ -286,7 +286,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		textField_4 = new JTextField();
 		textField_4
-				.setText("1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38");
+		.setText("1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38");
 		textField_4.setColumns(10);
 		panel_1.add(textField_4, "cell 2 3 3 1,growx");
 
@@ -297,12 +297,12 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		textField_5.setText("39");
 		textField_5.setColumns(10);
 		panel_1.add(textField_5, "cell 2 4");
-		
+
 		chckbx_6 = new JCheckBox("Non entrelacet");
 		panel_1.add(chckbx_6, "cell 3 0");
 		final ButtonGroup group = new ButtonGroup();
 		group.add(chckbx_5);
-        group.add(chckbx_6);
+		group.add(chckbx_6);
 		panel_5 = new JPanel();
 		panel_5.setBorder(new TitledBorder(null, "Normalisation",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -423,11 +423,11 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				|| structure.equals(FolderStructure.PatDatProtSer)) {
 			textArea.setText(desc_1);
 			((AbstractDocument) textArea.getDocument())
-					.setDocumentFilter(dfilter);
+			.setDocumentFilter(dfilter);
 		} else {
 			textArea.setText(desc_2);
 			((AbstractDocument) textArea.getDocument())
-					.setDocumentFilter(dfilter2);
+			.setDocumentFilter(dfilter2);
 		}
 
 		panel_3 = new JPanel();
@@ -440,7 +440,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		btnClose = new JButton("Close");
 		panel_3.add(btnClose, "cell 1 0,growx");
-		
+
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -766,15 +766,15 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		});
 		chckbx_5.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-					So(Integer.parseInt(textField_1.getText()),0);
+				So(Integer.parseInt(textField_1.getText()),0);
 			}
 		});
 		chckbx_6.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
-					So(Integer.parseInt(textField_1.getText()),1);	
+				So(Integer.parseInt(textField_1.getText()),1);	
 			}
 		});
-		
+
 		textField_1.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent arg0) {
 				if(!textField_1.getText().isEmpty() && !textField_2.getText().isEmpty() && !textField_1.getText().equals("0") && !textField_2.getText().equals("0"))
@@ -1702,7 +1702,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try{
-				createMatlabAndBashFiles(folders, structure);
+					createMatlabAndBashFiles(folders, structure);
 				}catch (Exception e){
 					e.printStackTrace();
 					WindowManager.mwLogger.log(Level.SEVERE, "Error to create submit files",e);
@@ -1728,6 +1728,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
 		Boolean filt=false;
 		Boolean filt2=false;
+		File dir = new File(textField_8.getText());
+		Long time;
+		String nom="";
 		int cpt=0;
 		if (structure.equals(FolderStructure.PatDatSer)
 				|| structure.equals(FolderStructure.PatDatProtSer)) {
@@ -1735,9 +1738,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 				subdir=findFiles(folders.get(j).toString());
 				if(comboBox_2.getSelectedItem().equals("Patient")){
 					dossier_filtre.clear();
-					dossier_filtre.add(folders.get(j).toString());
+					dossier_filtre.add(folders.get(j).getName());
 				}
-				
+
 				for (int i = 0; i < subdir.size(); i++) {	
 					if(comboBox_2.getSelectedItem().equals("Date")){
 						if(subdir.get(i).matches("(.*)"+textField_14.getText()+"(.*)"))
@@ -1758,153 +1761,21 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						}
 					}
 					else if(comboBox_2.getSelectedItem().equals("Serie") && structure.equals(FolderStructure.PatDatSer)){
-							path_ss_dossier=findFiles2(folders.get(j).toString());
-							dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
+						path_ss_dossier=findFiles2(folders.get(j).toString());
+						dossier_filtre=findFiles(path_ss_dossier.get(i).toString());
 					}
 					filt=false;
 					for (int k = 0; k < dossier_filtre.size(); k++) {
-						
+
 						if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
-							{
+						{
 							filt=true;
-							}
+						}
 					}
 					if(textField_14.getText().isEmpty()) {
-					Long time = System.nanoTime();
-					String nom = "job_" + time.toString();
-					File dir = new File(textField_8.getText());
-					try {
-						BufferedReader in = new BufferedReader(new FileReader(
-								SystemSettings.APP_DIR + File.separator + "lib"
-										+ File.separator + "MATLAB"
-										+ File.separator
-										+ "batch_restingState.m"));
-						BufferedWriter writer = new BufferedWriter(
-								new FileWriter(new File(dir + File.separator
-										+ nom + ".m")));
-						String line;
-						while ((line = in.readLine()) != null) {
-							if (chckbx.isSelected())
-								line = line.replace("#1#", "0");
-							else if (chckbx_3.isSelected())
-								line = line.replace("#1#", "2");
-							else
-								line = line.replace("#1#", "1");
-
-							line = line.replace("#2#", textField_7.getText());
-							if (chckbx_1.isSelected())
-								line = line.replace("#3#", "0");
-							else if (chckbx_4.isSelected())
-								line = line.replace("#3#", "2");
-							else
-								line = line.replace("#3#", "1");
-							if (textField_15.getText().equals(txt))
-								line = line.replace("#17#", "1");
-							else {
-								line = line.replace("#4#", textField_15.getText());
-								line = line.replace("#17#", "0");
-							}
-							line = line.replace("#5#", textField_1.getText());
-							line = line.replace("#6#", textField_2.getText());
-							line = line.replace("#7#", textField_3.getText());
-							line = line.replace("#8#", textField_4.getText());
-							line = line.replace("#9#", textField_5.getText());
-							line = line.replace("#10#", textField_6.getText());
-							line = line.replace("#11#", textField_11.getText());
-							line = line.replace("#12#", textField_12.getText());
-							line = line.replace("#13#", textField_13.getText());
-							if (chckbx_2.isSelected())
-								line = line.replace("#14#", "0");
-							else
-								line = line.replace("#14#", "1");
-							line = line.replace("#15#", folders.get(j)
-									.toString()
-									+ File.separator
-									+ subdir.get(i).toString());
-							line = line.replace("#16#", folders.get(j)
-									.getName());
-							line = line.replace("#18#", "0");
-							line = line.replace("#19#", subdir.get(i)
-									.toString());
-							if (structure.equals(FolderStructure.PatDatProtSer))
-								line = line.replace("#20#", "0");
-							else
-								line = line.replace("#20#", "1");
-							writer.write(line + "\n");
-						}
-						in.close();
-						writer.close();
-						writer = new BufferedWriter(new FileWriter(new File(dir
-								+ File.separator + nom + ".bat")));
-						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
-						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-								+ nom + "\n");
-						writer.write("exit\n");
-						writer.close();
-						String desc = textArea.getText(desc_1.length(),
-								textArea.getText().length() - desc_1.length());
-						String date = subdir.get(i).toString();
-						date = date.substring(0, 4) + "/"
-								+ date.substring(4, 6) + "/"
-								+ date.substring(6, 8);
-						String description = "Patient : "
-								+ folders.get(j).getName() + "\n"
-								+ "Acquisition date : " + date + "\n" + desc;
+						time = System.nanoTime();
+						nom = "job_" + time.toString();
 						
-						ArrayList<File> files = new ArrayList<>();
-						files.add((new File(dir + File.separator + nom + ".m")));
-						//files.add((new File(dir + File.separator + nom + ".bat")));
-						if(!textField_7.getText().isEmpty())
-							files.add((new File(textField_7.getText())));
-						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
-							files.add((new File(textField_15.getText())));
-						if(!textField_11.getText().isEmpty())
-							files.add((new File(textField_11.getText())));
-						if (comboBox.getSelectedItem().equals("WINDOWS")
-								&& comboBox_1.getSelectedItem()
-										.equals("X86_64"))
-							CondorUtils.submitJob(dir, files, new File(dir
-									+ File.separator + nom + ".bat"),
-									Integer.parseInt(textField_9.getText()),
-									Integer.parseInt(textField_10.getText()),
-									OS.WINDOWS, Arch.X86_64, description);
-						if (comboBox.getSelectedItem().equals("WINDOWS")
-								&& comboBox_1.getSelectedItem().equals("INTEL"))
-							CondorUtils.submitJob(dir, files, new File(dir
-									+ File.separator + nom + ".bat"),
-									Integer.parseInt(textField_9.getText()),
-									Integer.parseInt(textField_10.getText()),
-									OS.WINDOWS, Arch.INTEL, description);
-						if (comboBox.getSelectedItem().equals("UNIX")
-								&& comboBox_1.getSelectedItem()
-										.equals("X86_64"))
-							CondorUtils.submitJob(dir, files, new File(dir
-									+ File.separator + nom + ".bat"),
-									Integer.parseInt(textField_9.getText()),
-									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.X86_64, description);
-						if (comboBox.getSelectedItem().equals("UNIX")
-								&& comboBox_1.getSelectedItem().equals("INTEL"))
-							CondorUtils.submitJob(dir, files, new File(dir
-									+ File.separator + nom + ".bat"),
-									Integer.parseInt(textField_9.getText()),
-									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.INTEL, description);
-					} catch (IOException e) {
-						e.printStackTrace();
-						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (BadLocationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					}
-					else {if(filt || filt2) {
-						Long time = System.nanoTime();
-						String nom = "job_" + time.toString();
-						File dir = new File(textField_8.getText());
 						try {
 							BufferedReader in = new BufferedReader(new FileReader(
 									SystemSettings.APP_DIR + File.separator + "lib"
@@ -1970,7 +1841,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 									+ File.separator + nom + ".bat")));
 							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-									+ nom + "\n");
+									+ nom + ".m\n");
 							writer.write("exit\n");
 							writer.close();
 							String desc = textArea.getText(desc_1.length(),
@@ -1982,19 +1853,19 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							String description = "Patient : "
 									+ folders.get(j).getName() + "\n"
 									+ "Acquisition date : " + date + "\n" + desc;
-							
+
 							ArrayList<File> files = new ArrayList<>();
 							files.add((new File(dir + File.separator + nom + ".m")));
+							//files.add((new File(dir + File.separator + nom + ".bat")));
 							if(!textField_7.getText().isEmpty())
 								files.add((new File(textField_7.getText())));
-							//files.add((new File(dir + File.separator + nom + ".bat")));
 							if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
 								files.add((new File(textField_15.getText())));
 							if(!textField_11.getText().isEmpty())
 								files.add((new File(textField_11.getText())));
 							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem()
-											.equals("X86_64"))
+									.equals("X86_64"))
 								CondorUtils.submitJob(dir, files, new File(dir
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
@@ -2009,7 +1880,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										OS.WINDOWS, Arch.INTEL, description);
 							if (comboBox.getSelectedItem().equals("UNIX")
 									&& comboBox_1.getSelectedItem()
-											.equals("X86_64"))
+									.equals("X86_64"))
 								CondorUtils.submitJob(dir, files, new File(dir
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
@@ -2032,129 +1903,394 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+					}
+					else {if(filt || filt2) {
+						time = System.nanoTime();
+						nom = "job_" + time.toString();
+						try {
+							BufferedReader in = new BufferedReader(new FileReader(
+									SystemSettings.APP_DIR + File.separator + "lib"
+											+ File.separator + "MATLAB"
+											+ File.separator
+											+ "batch_restingState.m"));
+							BufferedWriter writer = new BufferedWriter(
+									new FileWriter(new File(dir + File.separator
+											+ nom + ".m")));
+							String line;
+							while ((line = in.readLine()) != null) {
+								if (chckbx.isSelected())
+									line = line.replace("#1#", "0");
+								else if (chckbx_3.isSelected())
+									line = line.replace("#1#", "2");
+								else
+									line = line.replace("#1#", "1");
+
+								line = line.replace("#2#", textField_7.getText());
+								if (chckbx_1.isSelected())
+									line = line.replace("#3#", "0");
+								else if (chckbx_4.isSelected())
+									line = line.replace("#3#", "2");
+								else
+									line = line.replace("#3#", "1");
+								if (textField_15.getText().equals(txt))
+									line = line.replace("#17#", "1");
+								else {
+									line = line.replace("#4#", textField_15.getText());
+									line = line.replace("#17#", "0");
+								}
+								line = line.replace("#5#", textField_1.getText());
+								line = line.replace("#6#", textField_2.getText());
+								line = line.replace("#7#", textField_3.getText());
+								line = line.replace("#8#", textField_4.getText());
+								line = line.replace("#9#", textField_5.getText());
+								line = line.replace("#10#", textField_6.getText());
+								line = line.replace("#11#", textField_11.getText());
+								line = line.replace("#12#", textField_12.getText());
+								line = line.replace("#13#", textField_13.getText());
+								if (chckbx_2.isSelected())
+									line = line.replace("#14#", "0");
+								else
+									line = line.replace("#14#", "1");
+								line = line.replace("#15#", folders.get(j)
+										.toString()
+										+ File.separator
+										+ subdir.get(i).toString());
+								line = line.replace("#16#", folders.get(j)
+										.getName());
+								line = line.replace("#18#", "0");
+								line = line.replace("#19#", subdir.get(i)
+										.toString());
+								if (structure.equals(FolderStructure.PatDatProtSer))
+									line = line.replace("#20#", "0");
+								else
+									line = line.replace("#20#", "1");
+								writer.write(line + "\n");
+							}
+							in.close();
+							writer.close();
+							writer = new BufferedWriter(new FileWriter(new File(dir
+									+ File.separator + nom + ".bat")));
+							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
+							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
+									+ nom + ".m\n");
+							writer.write("exit\n");
+							writer.close();
+							String desc = textArea.getText(desc_1.length(),
+									textArea.getText().length() - desc_1.length());
+							String date = subdir.get(i).toString();
+							date = date.substring(0, 4) + "/"
+									+ date.substring(4, 6) + "/"
+									+ date.substring(6, 8);
+							String description = "Patient : "
+									+ folders.get(j).getName() + "\n"
+									+ "Acquisition date : " + date + "\n" + desc;
+
+							ArrayList<File> files = new ArrayList<>();
+							files.add((new File(dir + File.separator + nom + ".m")));
+							if(!textField_7.getText().isEmpty())
+								files.add((new File(textField_7.getText())));
+							//files.add((new File(dir + File.separator + nom + ".bat")));
+							if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+								files.add((new File(textField_15.getText())));
+							if(!textField_11.getText().isEmpty())
+								files.add((new File(textField_11.getText())));
+							if (comboBox.getSelectedItem().equals("WINDOWS")
+									&& comboBox_1.getSelectedItem()
+									.equals("X86_64"))
+								CondorUtils.submitJob(dir, files, new File(dir
+										+ File.separator + nom + ".bat"),
+										Integer.parseInt(textField_9.getText()),
+										Integer.parseInt(textField_10.getText()),
+										OS.WINDOWS, Arch.X86_64, description);
+							if (comboBox.getSelectedItem().equals("WINDOWS")
+									&& comboBox_1.getSelectedItem().equals("INTEL"))
+								CondorUtils.submitJob(dir, files, new File(dir
+										+ File.separator + nom + ".bat"),
+										Integer.parseInt(textField_9.getText()),
+										Integer.parseInt(textField_10.getText()),
+										OS.WINDOWS, Arch.INTEL, description);
+							if (comboBox.getSelectedItem().equals("UNIX")
+									&& comboBox_1.getSelectedItem()
+									.equals("X86_64"))
+								CondorUtils.submitJob(dir, files, new File(dir
+										+ File.separator + nom + ".bat"),
+										Integer.parseInt(textField_9.getText()),
+										Integer.parseInt(textField_10.getText()),
+										OS.UNIX, Arch.X86_64, description);
+							if (comboBox.getSelectedItem().equals("UNIX")
+									&& comboBox_1.getSelectedItem().equals("INTEL"))
+								CondorUtils.submitJob(dir, files, new File(dir
+										+ File.separator + nom + ".bat"),
+										Integer.parseInt(textField_9.getText()),
+										Integer.parseInt(textField_10.getText()),
+										OS.UNIX, Arch.INTEL, description);
+						} catch (IOException e) {
+							e.printStackTrace();
+							WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (BadLocationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						}
+					}
+					}
 				}
 			}
 		} else {
 			for (int j = 0; j < folders.size(); j++) {
 				if(comboBox_2.getSelectedItem().equals("Patient")){
 					dossier_filtre.clear();
-					dossier_filtre.add(folders.get(j).toString());
+					dossier_filtre.add(folders.get(j).getName());
 				}
-				
-				Long time = System.nanoTime();
-				String nom = "job_" + time.toString();
-				File dir = new File(textField_8.getText());
-				try {
-					BufferedReader in = new BufferedReader(new FileReader(
-							SystemSettings.APP_DIR + File.separator + "lib"
-									+ File.separator + "MATLAB"
-									+ File.separator + "batch_restingState.m"));
-					BufferedWriter writer = new BufferedWriter(new FileWriter(
-							new File(dir + File.separator + nom + ".m")));
-					String line;
-					while ((line = in.readLine()) != null) {
-						if (chckbx.isSelected())
-							line = line.replace("#1#", "0");
-						else if (chckbx_3.isSelected())
-							line = line.replace("#1#", "2");
-						else
-							line = line.replace("#1#", "1");
-						line = line.replace("#2#", textField_7.getText());
-						if (chckbx_1.isSelected())
-							line = line.replace("#3#", "0");
-						else if (chckbx_4.isSelected())
-							line = line.replace("#3#", "2");
-						else
-							line = line.replace("#3#", "1");
-						if (textField_15.getText().equals(txt))
-							line = line.replace("#17#", "1");
-						else {
-							line = line.replace("#4#", textField_15.getText());
-							line = line.replace("#17#", "0");
-						}
-						line = line.replace("#5#", textField_1.getText());
-						line = line.replace("#6#", textField_2.getText());
-						line = line.replace("#7#", textField_3.getText());
-						line = line.replace("#8#", textField_4.getText());
-						line = line.replace("#9#", textField_5.getText());
-						line = line.replace("#10#", textField_6.getText());
-						line = line.replace("#11#", textField_11.getText());
-						line = line.replace("#12#", textField_12.getText());
-						line = line.replace("#13#", textField_13.getText());
-						if (chckbx_2.isSelected())
-							line = line.replace("#14#", "0");
-						else
-							line = line.replace("#14#", "1");
-						line = line.replace("#15#", folders.get(j).toString());
-						line = line.replace("#16#", folders.get(j).getName());
-						line = line.replace("#18#", "1");
-						line = line.replace("#19#", "");
-						if (structure.equals(FolderStructure.PatProtSer))
-							line = line.replace("#20#", "0");
-						else
-							line = line.replace("#20#", "1");
-						writer.write(line + "\n");
+				else if(comboBox_2.getSelectedItem().equals("Protocol")){
+					dossier_filtre=findFiles(folders.get(j).toString());
+				}
+				else if(comboBox_2.getSelectedItem().equals("Serie") && structure.equals(FolderStructure.PatProtSer)){
+					path_ss_dossier=findFiles2(folders.get(j).toString());
+					dossier_filtre.clear();
+					for (int k = 0; k < path_ss_dossier.size(); k++) {
+						dossier_filtre.addAll(findFiles(path_ss_dossier.get(k).toString()));
 					}
-					in.close();
-					writer.close();
-					writer = new BufferedWriter(new FileWriter(new File(dir
-							+ File.separator + nom + ".bat")));
-					writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
-					writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-							+ nom + ".m\n");
-					writer.write("exit\n");
-					writer.close();
-					String desc = textArea.getText(desc_2.length(), textArea
-							.getText().length() - desc_2.length());
-					String description = "Patient : "
-							+ folders.get(j).getName() + "\n" + desc;
-					ArrayList<File> files = new ArrayList<>();
-					files.add((new File(dir + File.separator + nom + ".m")));
-					if(!textField_7.getText().isEmpty())
-						files.add((new File(textField_7.getText())));
-					if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
-						files.add((new File(textField_15.getText())));
-					if(!textField_11.getText().isEmpty())
-						files.add((new File(textField_11.getText())));
-					if (comboBox.getSelectedItem().equals("WINDOWS")
-							&& comboBox_1.getSelectedItem().equals("X86_64"))
-						CondorUtils.submitJob(dir, files, new File(dir
-								+ File.separator + nom + ".bat"),
-								Integer.parseInt(textField_9.getText()),
-								Integer.parseInt(textField_10.getText()),
-								OS.WINDOWS, Arch.X86_64, description);
-					if (comboBox.getSelectedItem().equals("WINDOWS")
-							&& comboBox_1.getSelectedItem().equals("INTEL"))
-						CondorUtils.submitJob(dir, files, new File(dir
-								+ File.separator + nom + ".bat"),
-								Integer.parseInt(textField_9.getText()),
-								Integer.parseInt(textField_10.getText()),
-								OS.WINDOWS, Arch.INTEL, description);
-					if (comboBox.getSelectedItem().equals("UNIX")
-							&& comboBox_1.getSelectedItem().equals("X86_64"))
-						CondorUtils.submitJob(dir, files, new File(dir
-								+ File.separator + nom + ".bat"),
-								Integer.parseInt(textField_9.getText()),
-								Integer.parseInt(textField_10.getText()),
-								OS.UNIX, Arch.X86_64, description);
-					if (comboBox.getSelectedItem().equals("UNIX")
-							&& comboBox_1.getSelectedItem().equals("INTEL"))
-						CondorUtils.submitJob(dir, files, new File(dir
-								+ File.separator + nom + ".bat"),
-								Integer.parseInt(textField_9.getText()),
-								Integer.parseInt(textField_10.getText()),
-								OS.UNIX, Arch.INTEL, description);
-				} catch (IOException e) {
-					e.printStackTrace();
-					WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				}
+				else if(comboBox_2.getSelectedItem().equals("Serie") && structure.equals(FolderStructure.PatSer)){
+					dossier_filtre=findFiles(folders.get(j).toString());
+				}
+				filt=false;
+				for (int k = 0; k < dossier_filtre.size(); k++) {
+
+					if(dossier_filtre.get(k).matches("(.*)"+textField_14.getText()+"(.*)"))
+					{
+						filt=true;
+					}
+				}
+				if(textField_14.getText().isEmpty()) {
+					time = System.nanoTime();
+					nom = "job_" + time.toString();
+					try {
+						BufferedReader in = new BufferedReader(new FileReader(
+								SystemSettings.APP_DIR + File.separator + "lib"
+										+ File.separator + "MATLAB"
+										+ File.separator + "batch_restingState.m"));
+						BufferedWriter writer = new BufferedWriter(new FileWriter(
+								new File(dir + File.separator + nom + ".m")));
+						String line;
+						while ((line = in.readLine()) != null) {
+							if (chckbx.isSelected())
+								line = line.replace("#1#", "0");
+							else if (chckbx_3.isSelected())
+								line = line.replace("#1#", "2");
+							else
+								line = line.replace("#1#", "1");
+							line = line.replace("#2#", textField_7.getText());
+							if (chckbx_1.isSelected())
+								line = line.replace("#3#", "0");
+							else if (chckbx_4.isSelected())
+								line = line.replace("#3#", "2");
+							else
+								line = line.replace("#3#", "1");
+							if (textField_15.getText().equals(txt))
+								line = line.replace("#17#", "1");
+							else {
+								line = line.replace("#4#", textField_15.getText());
+								line = line.replace("#17#", "0");
+							}
+							line = line.replace("#5#", textField_1.getText());
+							line = line.replace("#6#", textField_2.getText());
+							line = line.replace("#7#", textField_3.getText());
+							line = line.replace("#8#", textField_4.getText());
+							line = line.replace("#9#", textField_5.getText());
+							line = line.replace("#10#", textField_6.getText());
+							line = line.replace("#11#", textField_11.getText());
+							line = line.replace("#12#", textField_12.getText());
+							line = line.replace("#13#", textField_13.getText());
+							if (chckbx_2.isSelected())
+								line = line.replace("#14#", "0");
+							else
+								line = line.replace("#14#", "1");
+							line = line.replace("#15#", folders.get(j).toString());
+							line = line.replace("#16#", folders.get(j).getName());
+							line = line.replace("#18#", "1");
+							line = line.replace("#19#", "");
+							if (structure.equals(FolderStructure.PatProtSer))
+								line = line.replace("#20#", "0");
+							else
+								line = line.replace("#20#", "1");
+							writer.write(line + "\n");
+						}
+						in.close();
+						writer.close();
+						writer = new BufferedWriter(new FileWriter(new File(dir
+								+ File.separator + nom + ".bat")));
+						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
+						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
+								+ nom + ".m\n");
+						writer.write("exit\n");
+						writer.close();
+						String desc = textArea.getText(desc_2.length(), textArea
+								.getText().length() - desc_2.length());
+						String description = "Patient : "
+								+ folders.get(j).getName() + "\n" + desc;
+						ArrayList<File> files = new ArrayList<>();
+						files.add((new File(dir + File.separator + nom + ".m")));
+						if(!textField_7.getText().isEmpty())
+							files.add((new File(textField_7.getText())));
+						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+							files.add((new File(textField_15.getText())));
+						if(!textField_11.getText().isEmpty())
+							files.add((new File(textField_11.getText())));
+						if (comboBox.getSelectedItem().equals("WINDOWS")
+								&& comboBox_1.getSelectedItem().equals("X86_64"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.WINDOWS, Arch.X86_64, description);
+						if (comboBox.getSelectedItem().equals("WINDOWS")
+								&& comboBox_1.getSelectedItem().equals("INTEL"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.WINDOWS, Arch.INTEL, description);
+						if (comboBox.getSelectedItem().equals("UNIX")
+								&& comboBox_1.getSelectedItem().equals("X86_64"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.UNIX, Arch.X86_64, description);
+						if (comboBox.getSelectedItem().equals("UNIX")
+								&& comboBox_1.getSelectedItem().equals("INTEL"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.UNIX, Arch.INTEL, description);
+					} catch (IOException e) {
+						e.printStackTrace();
+						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else if(filt){
+					time = System.nanoTime();
+					nom  = "job_" + time.toString();
+					try {
+						BufferedReader in = new BufferedReader(new FileReader(
+								SystemSettings.APP_DIR + File.separator + "lib"
+										+ File.separator + "MATLAB"
+										+ File.separator + "batch_restingState.m"));
+						BufferedWriter writer = new BufferedWriter(new FileWriter(
+								new File(dir + File.separator + nom + ".m")));
+						String line;
+						while ((line = in.readLine()) != null) {
+							if (chckbx.isSelected())
+								line = line.replace("#1#", "0");
+							else if (chckbx_3.isSelected())
+								line = line.replace("#1#", "2");
+							else
+								line = line.replace("#1#", "1");
+							line = line.replace("#2#", textField_7.getText());
+							if (chckbx_1.isSelected())
+								line = line.replace("#3#", "0");
+							else if (chckbx_4.isSelected())
+								line = line.replace("#3#", "2");
+							else
+								line = line.replace("#3#", "1");
+							if (textField_15.getText().equals(txt))
+								line = line.replace("#17#", "1");
+							else {
+								line = line.replace("#4#", textField_15.getText());
+								line = line.replace("#17#", "0");
+							}
+							line = line.replace("#5#", textField_1.getText());
+							line = line.replace("#6#", textField_2.getText());
+							line = line.replace("#7#", textField_3.getText());
+							line = line.replace("#8#", textField_4.getText());
+							line = line.replace("#9#", textField_5.getText());
+							line = line.replace("#10#", textField_6.getText());
+							line = line.replace("#11#", textField_11.getText());
+							line = line.replace("#12#", textField_12.getText());
+							line = line.replace("#13#", textField_13.getText());
+							if (chckbx_2.isSelected())
+								line = line.replace("#14#", "0");
+							else
+								line = line.replace("#14#", "1");
+							line = line.replace("#15#", folders.get(j).toString());
+							line = line.replace("#16#", folders.get(j).getName());
+							line = line.replace("#18#", "1");
+							line = line.replace("#19#", "");
+							if (structure.equals(FolderStructure.PatProtSer))
+								line = line.replace("#20#", "0");
+							else
+								line = line.replace("#20#", "1");
+							writer.write(line + "\n");
+						}
+						in.close();
+						writer.close();
+						writer = new BufferedWriter(new FileWriter(new File(dir
+								+ File.separator + nom + ".bat")));
+						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
+						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
+								+ nom + ".m\n");
+						writer.write("exit\n");
+						writer.close();
+						String desc = textArea.getText(desc_2.length(), textArea
+								.getText().length() - desc_2.length());
+						String description = "Patient : "
+								+ folders.get(j).getName() + "\n" + desc;
+						ArrayList<File> files = new ArrayList<>();
+						files.add((new File(dir + File.separator + nom + ".m")));
+						if(!textField_7.getText().isEmpty())
+							files.add((new File(textField_7.getText())));
+						if(!textField_15.getText().equals("(matlabroot)\\toolbox\\FieldMap\\pm_defaults_skyra.m"))
+							files.add((new File(textField_15.getText())));
+						if(!textField_11.getText().isEmpty())
+							files.add((new File(textField_11.getText())));
+						if (comboBox.getSelectedItem().equals("WINDOWS")
+								&& comboBox_1.getSelectedItem().equals("X86_64"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.WINDOWS, Arch.X86_64, description);
+						if (comboBox.getSelectedItem().equals("WINDOWS")
+								&& comboBox_1.getSelectedItem().equals("INTEL"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.WINDOWS, Arch.INTEL, description);
+						if (comboBox.getSelectedItem().equals("UNIX")
+								&& comboBox_1.getSelectedItem().equals("X86_64"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.UNIX, Arch.X86_64, description);
+						if (comboBox.getSelectedItem().equals("UNIX")
+								&& comboBox_1.getSelectedItem().equals("INTEL"))
+							CondorUtils.submitJob(dir, files, new File(dir
+									+ File.separator + nom + ".bat"),
+									Integer.parseInt(textField_9.getText()),
+									Integer.parseInt(textField_10.getText()),
+									OS.UNIX, Arch.INTEL, description);
+					} catch (IOException e) {
+						e.printStackTrace();
+						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -2240,7 +2376,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private class Filter extends DocumentFilter {
 		public void insertString(final FilterBypass fb, final int offset,
 				final String string, AttributeSet attr)
-				throws BadLocationException {
+						throws BadLocationException {
 			if (offset >= desc_1.length() && offset <= 80) {
 				super.insertString(fb, offset, string, attr);
 			}
@@ -2255,7 +2391,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		public void replace(final FilterBypass fb, final int offset,
 				final int length, final String text, final AttributeSet attrs)
-				throws BadLocationException {
+						throws BadLocationException {
 
 			if (offset >= desc_1.length() && offset <= 80) {
 				super.replace(fb, offset, length, text, attrs);
@@ -2266,7 +2402,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private class Filter2 extends DocumentFilter {
 		public void insertString(final FilterBypass fb, final int offset,
 				final String string, AttributeSet attr)
-				throws BadLocationException {
+						throws BadLocationException {
 			if (offset >= desc_2.length()) {
 				super.insertString(fb, offset, string, attr);
 			}
@@ -2281,7 +2417,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		public void replace(final FilterBypass fb, final int offset,
 				final int length, final String text, final AttributeSet attrs)
-				throws BadLocationException {
+						throws BadLocationException {
 			if (text.contains("\n")) {
 				if (offset >= desc_2.length() && offset < 20) {
 					super.replace(fb, offset, length, text, attrs);
@@ -2321,7 +2457,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 			j=nb/2;
 			res2=""+j;
 		}
-		
+
 		textField_4.setText(res);
 		textField_5.setText(res2);
 	}

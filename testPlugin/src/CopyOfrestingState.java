@@ -264,6 +264,12 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		textField_1.setColumns(10);
 		chckbx_5 = new JCheckBox("Entrelace");
 		panel_1.add(chckbx_5, "flowx,cell 3 0,alignx center");
+		chckbx_5.setSelected(true);
+		chckbx_6 = new JCheckBox("Non entrelacet");
+		panel_1.add(chckbx_6, "cell 3 0");
+		final ButtonGroup group = new ButtonGroup();
+		group.add(chckbx_5);
+		group.add(chckbx_6);
 
 		lblTr = new JLabel("Tr");
 		panel_1.add(lblTr, "cell 1 1");
@@ -298,11 +304,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		textField_5.setColumns(10);
 		panel_1.add(textField_5, "cell 2 4");
 
-		chckbx_6 = new JCheckBox("Non entrelacet");
-		panel_1.add(chckbx_6, "cell 3 0");
-		final ButtonGroup group = new ButtonGroup();
-		group.add(chckbx_5);
-		group.add(chckbx_6);
+
 		panel_5 = new JPanel();
 		panel_5.setBorder(new TitledBorder(null, "Normalisation",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -1775,7 +1777,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 					if(textField_14.getText().isEmpty()) {
 						time = System.nanoTime();
 						nom = "job_" + time.toString();
-						
+
 						try {
 							BufferedReader in = new BufferedReader(new FileReader(
 									SystemSettings.APP_DIR + File.separator + "lib"
@@ -1837,8 +1839,13 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							}
 							in.close();
 							writer.close();
-							writer = new BufferedWriter(new FileWriter(new File(dir
-									+ File.separator + nom + ".bat")));
+							if(comboBox.getSelectedItem().equals("WINDOWS"))
+							{writer = new BufferedWriter(new FileWriter(new File(dir
+									+ File.separator + nom + ".bat")));}
+							else
+							{writer = new BufferedWriter(new FileWriter(new File(dir
+									+ File.separator + nom + ".sh")));
+							writer.write("#!/bin/sh");}
 							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
 									+ nom + ".m\n");
@@ -1968,8 +1975,13 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							}
 							in.close();
 							writer.close();
-							writer = new BufferedWriter(new FileWriter(new File(dir
-									+ File.separator + nom + ".bat")));
+							if(comboBox.getSelectedItem().equals("WINDOWS"))
+							{writer = new BufferedWriter(new FileWriter(new File(dir
+									+ File.separator + nom + ".bat")));}
+							else
+							{writer = new BufferedWriter(new FileWriter(new File(dir
+									+ File.separator + nom + ".sh")));
+							writer.write("#!/bin/sh");}
 							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
 									+ nom + ".m\n");
@@ -2121,8 +2133,13 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						}
 						in.close();
 						writer.close();
-						writer = new BufferedWriter(new FileWriter(new File(dir
-								+ File.separator + nom + ".bat")));
+						if(comboBox.getSelectedItem().equals("WINDOWS"))
+						{writer = new BufferedWriter(new FileWriter(new File(dir
+								+ File.separator + nom + ".bat")));}
+						else
+						{writer = new BufferedWriter(new FileWriter(new File(dir
+								+ File.separator + nom + ".sh")));
+						writer.write("#!/bin/sh");}
 						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
 								+ nom + ".m\n");
@@ -2234,8 +2251,13 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						}
 						in.close();
 						writer.close();
-						writer = new BufferedWriter(new FileWriter(new File(dir
-								+ File.separator + nom + ".bat")));
+						if(comboBox.getSelectedItem().equals("WINDOWS"))
+						{writer = new BufferedWriter(new FileWriter(new File(dir
+								+ File.separator + nom + ".bat")));}
+						else
+						{writer = new BufferedWriter(new FileWriter(new File(dir
+								+ File.separator + nom + ".sh")));
+						writer.write("#!/bin/sh");}
 						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
 								+ nom + ".m\n");

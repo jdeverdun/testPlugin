@@ -1,5 +1,9 @@
+import ij.gui.ProgressBar;
+
 import java.awt.BorderLayout;
 import java.awt.CheckboxGroup;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +33,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ProgressMonitor;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
@@ -37,6 +42,8 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
+
+import org.apache.commons.lang3.text.translate.EntityArrays;
 
 import model.ServerInfo;
 import net.miginfocom.swing.MigLayout;
@@ -47,6 +54,7 @@ import tools.cluster.condor.CondorUtils;
 import tools.cluster.condor.CondorUtils.Arch;
 import tools.cluster.condor.CondorUtils.OS;
 import display.MainWindow;
+import display.containers.ProgressPanel;
 
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -118,8 +126,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JComboBox<String> comboBox_2;
 	private JCheckBox chckbx_5;
 	private JCheckBox chckbx_6;
-
 	private boolean isSubmissionDone = false;
+	private JProgressBar progressBar;
+	private JLabel lblNewLabel; 
+	private JButton btn_cancel;
 
 	@Override
 	public PluginCategory getCategory() {
@@ -166,6 +176,9 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		filtre = new JLabel("Filtre");
 		panel.add(filtre,"cell 1 1");
+		
+		
+		    
 		comboBox_2 = new JComboBox<String>();
 		comboBox_2.removeAllItems();
 		if (structure.equals(FolderStructure.PatDatProtSer)){
@@ -434,7 +447,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 
 		panel_3 = new JPanel();
 		frame.getContentPane().add(panel_3, "cell 0 5,grow");
-		panel_3.setLayout(new MigLayout("", "[397.00,grow][360.00,grow]", "[]"));
+		panel_3.setLayout(new MigLayout("", "[397.00,grow][360.00,grow]", "[][]"));
 
 		btnOk = new JButton("OK");
 		panel_3.add(btnOk, "cell 0 0,growx");
@@ -1699,20 +1712,59 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		 * InputVerifier verifier = new MyNumericVerifier();
 		 * textField_1.setInputVerifier(verifier);
 		 */
+
+		final JFrame f = new JFrame();
+		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		f.setTitle(title);
+		f.setSize(300, 90);
+		f.setLocationRelativeTo(null);// (WindowManager.MAINWINDOW.getLocation());
+		f.setIconImage(new ImageIcon(this.getClass().getResource(
+				"/images/logo32.png")).getImage());
+		f.getContentPane().setLayout(new MigLayout("", "[grow]", "[][10][]"));
+		
+		lblNewLabel = new JLabel("Wait while creating jobs :");
+		f.getContentPane().add(lblNewLabel, "cell 0 0");
+		
+		progressBar = new JProgressBar();
+		progressBar.setIndeterminate(true);
+		f.getContentPane().add(progressBar, "cell 0 2,growx");
+		
+		btn_cancel = new JButton("Cancel");
+		f.getContentPane().add(btn_cancel, "cell 0 2,alignx center");
+		
 		btnOk.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try{
-					createMatlabAndBashFiles(folders, structure);
-				}catch (Exception e){
-					e.printStackTrace();
-					WindowManager.mwLogger.log(Level.SEVERE, "Error to create submit files",e);
-				}
 				frame.dispose();
+				final Thread tr = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try{
+							f.setVisible(true);
+							createMatlabAndBashFiles(folders, structure);
+							f.setVisible(false);
+						}catch (Exception e){
+							e.printStackTrace();
+							WindowManager.mwLogger.log(Level.SEVERE, "Error to create submit files",e);
+						}
+						
+					}
+				});
+				tr.start();
+				btn_cancel.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						tr.stop();
+						f.dispose();
+					}
+				});
+				
 			}
 		});
 		frame.getRootPane().setDefaultButton(btnOk);
+		
+		
 		btnClose.addActionListener(new ActionListener() {
 
 			@Override
@@ -1733,7 +1785,6 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		File dir = new File(textField_8.getText());
 		Long time;
 		String nom="";
-		int cpt=0;
 		if (structure.equals(FolderStructure.PatDatSer)
 				|| structure.equals(FolderStructure.PatDatProtSer)) {
 			for (int j = 0; j < folders.size(); j++) {
@@ -2354,7 +2405,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		 */
 	}
 
-	public ArrayList<String> findFiles(String directoryPath) {
+	public static ArrayList<String> findFiles(String directoryPath) {
 		File directory = new File(directoryPath);
 		ArrayList<String> subdir = new ArrayList<String>();
 		if (!directory.exists()) {

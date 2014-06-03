@@ -1,9 +1,4 @@
-import ij.gui.ProgressBar;
 
-import java.awt.BorderLayout;
-import java.awt.CheckboxGroup;
-import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -33,7 +27,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ProgressMonitor;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
@@ -43,9 +36,6 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
-import org.apache.commons.lang3.text.translate.EntityArrays;
-
-import model.ServerInfo;
 import net.miginfocom.swing.MigLayout;
 import plugins.FolderProcessingPlugins;
 import settings.SystemSettings;
@@ -54,10 +44,7 @@ import tools.cluster.condor.CondorUtils;
 import tools.cluster.condor.CondorUtils.Arch;
 import tools.cluster.condor.CondorUtils.OS;
 import display.MainWindow;
-import display.containers.ProgressPanel;
 
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 

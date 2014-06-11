@@ -59,6 +59,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JTextField textField_6;
 	private JTextField textField_7;
 	private JTextField textField_4;
+	private JTextField textField_16;
 	private JPanel panel;
 	private JLabel lblOrientation;
 	private JLabel lblPresubstractPhaseAnd;
@@ -103,6 +104,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	private JCheckBox chckbx_4;
 	private JLabel lblCheckIfYou_1;
 	private String txt;
+	private JLabel lblMachine;
 	private JLabel lblDescription;
 	private JScrollPane scrollPane;
 	private JTextArea textArea;
@@ -143,7 +145,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		frame = new JFrame();
 		isSubmissionDone = false;
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setSize(800, 860);
+		frame.setSize(800, 870);
 		frame.setTitle(title);
 		frame.setLocationRelativeTo(null);// (WindowManager.MAINWINDOW.getLocation());
 		frame.setIconImage(new ImageIcon(this.getClass().getResource(
@@ -262,10 +264,10 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		textField_1.setText("39");
 		panel_1.add(textField_1, "cell 2 0");
 		textField_1.setColumns(10);
-		chckbx_5 = new JCheckBox("Entrelace");
+		chckbx_5 = new JCheckBox("Interlaced");
 		panel_1.add(chckbx_5, "flowx,cell 3 0,alignx center");
 		chckbx_5.setSelected(true);
-		chckbx_6 = new JCheckBox("Non entrelacet");
+		chckbx_6 = new JCheckBox("Non-interlaced");
 		panel_1.add(chckbx_6, "cell 3 0");
 		final ButtonGroup group = new ButtonGroup();
 		group.add(chckbx_5);
@@ -411,11 +413,19 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		comboBox_1.addItem("INTEL");
 		panel_4.add(comboBox_1, "cell 2 4");
 
+		lblMachine = new JLabel("Choose the machine to run job (optionnal)");
+		panel_4.add(lblMachine, "cell 1 5");
+		
+		textField_16 = new JTextField();
+		textField_16.setText("ARNGDC2-DATA");
+		panel_4.add(textField_16, "cell 2 5");
+		textField_10.setColumns(10);
+		
 		lblDescription = new JLabel("Description");
-		panel_4.add(lblDescription, "cell 1 5");
-
+		panel_4.add(lblDescription, "cell 1 6");
+		
 		scrollPane = new JScrollPane();
-		panel_4.add(scrollPane, "cell 2 5,grow");
+		panel_4.add(scrollPane, "cell 2 6,grow");
 
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
@@ -1769,6 +1779,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
 		Boolean filt=false;
 		Boolean filt2=false;
+		String machine = textField_16.getText();
 		File dir = new File(textField_8.getText());
 		Long time;
 		String nom="";
@@ -1886,7 +1897,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							writer.write("#!/bin/sh");}
 							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-									+ nom + ".m\n");
+									+ nom + "\n");
 							writer.write("exit\n");
 							writer.close();
 							String desc = textArea.getText(desc_1.length(),
@@ -1915,14 +1926,14 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.WINDOWS, Arch.X86_64, description);
+										OS.WINDOWS, Arch.X86_64, description, machine);
 							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem().equals("INTEL"))
 								CondorUtils.submitJob(dir, files, new File(dir
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.WINDOWS, Arch.INTEL, description);
+										OS.WINDOWS, Arch.INTEL, description, machine);
 							if (comboBox.getSelectedItem().equals("UNIX")
 									&& comboBox_1.getSelectedItem()
 									.equals("X86_64"))
@@ -1930,14 +1941,14 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.UNIX, Arch.X86_64, description);
+										OS.UNIX, Arch.X86_64, description, machine);
 							if (comboBox.getSelectedItem().equals("UNIX")
 									&& comboBox_1.getSelectedItem().equals("INTEL"))
 								CondorUtils.submitJob(dir, files, new File(dir
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.UNIX, Arch.INTEL, description);
+										OS.UNIX, Arch.INTEL, description, machine);
 						} catch (IOException e) {
 							e.printStackTrace();
 							WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
@@ -2022,7 +2033,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 							writer.write("#!/bin/sh");}
 							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-									+ nom + ".m\n");
+									+ nom + "\n");
 							writer.write("exit\n");
 							writer.close();
 							String desc = textArea.getText(desc_1.length(),
@@ -2051,14 +2062,14 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.WINDOWS, Arch.X86_64, description);
+										OS.WINDOWS, Arch.X86_64, description, machine);
 							if (comboBox.getSelectedItem().equals("WINDOWS")
 									&& comboBox_1.getSelectedItem().equals("INTEL"))
 								CondorUtils.submitJob(dir, files, new File(dir
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.WINDOWS, Arch.INTEL, description);
+										OS.WINDOWS, Arch.INTEL, description, machine);
 							if (comboBox.getSelectedItem().equals("UNIX")
 									&& comboBox_1.getSelectedItem()
 									.equals("X86_64"))
@@ -2066,14 +2077,14 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.UNIX, Arch.X86_64, description);
+										OS.UNIX, Arch.X86_64, description, machine);
 							if (comboBox.getSelectedItem().equals("UNIX")
 									&& comboBox_1.getSelectedItem().equals("INTEL"))
 								CondorUtils.submitJob(dir, files, new File(dir
 										+ File.separator + nom + ".bat"),
 										Integer.parseInt(textField_9.getText()),
 										Integer.parseInt(textField_10.getText()),
-										OS.UNIX, Arch.INTEL, description);
+										OS.UNIX, Arch.INTEL, description, machine);
 						} catch (IOException e) {
 							e.printStackTrace();
 							WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
@@ -2180,7 +2191,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						writer.write("#!/bin/sh");}
 						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-								+ nom + ".m\n");
+								+ nom + "\n");
 						writer.write("exit\n");
 						writer.close();
 						String desc = textArea.getText(desc_2.length(), textArea
@@ -2201,28 +2212,28 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.WINDOWS, Arch.X86_64, description);
+									OS.WINDOWS, Arch.X86_64, description, machine);
 						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem().equals("INTEL"))
 							CondorUtils.submitJob(dir, files, new File(dir
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.WINDOWS, Arch.INTEL, description);
+									OS.WINDOWS, Arch.INTEL, description, machine);
 						if (comboBox.getSelectedItem().equals("UNIX")
 								&& comboBox_1.getSelectedItem().equals("X86_64"))
 							CondorUtils.submitJob(dir, files, new File(dir
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.X86_64, description);
+									OS.UNIX, Arch.X86_64, description, machine);
 						if (comboBox.getSelectedItem().equals("UNIX")
 								&& comboBox_1.getSelectedItem().equals("INTEL"))
 							CondorUtils.submitJob(dir, files, new File(dir
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.INTEL, description);
+									OS.UNIX, Arch.INTEL, description, machine);
 					} catch (IOException e) {
 						e.printStackTrace();
 						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
@@ -2298,7 +2309,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 						writer.write("#!/bin/sh");}
 						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-								+ nom + ".m\n");
+								+ nom + "\n");
 						writer.write("exit\n");
 						writer.close();
 						String desc = textArea.getText(desc_2.length(), textArea
@@ -2319,28 +2330,28 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.WINDOWS, Arch.X86_64, description);
+									OS.WINDOWS, Arch.X86_64, description, machine);
 						if (comboBox.getSelectedItem().equals("WINDOWS")
 								&& comboBox_1.getSelectedItem().equals("INTEL"))
 							CondorUtils.submitJob(dir, files, new File(dir
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.WINDOWS, Arch.INTEL, description);
+									OS.WINDOWS, Arch.INTEL, description, machine);
 						if (comboBox.getSelectedItem().equals("UNIX")
 								&& comboBox_1.getSelectedItem().equals("X86_64"))
 							CondorUtils.submitJob(dir, files, new File(dir
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.X86_64, description);
+									OS.UNIX, Arch.X86_64, description, machine);
 						if (comboBox.getSelectedItem().equals("UNIX")
 								&& comboBox_1.getSelectedItem().equals("INTEL"))
 							CondorUtils.submitJob(dir, files, new File(dir
 									+ File.separator + nom + ".bat"),
 									Integer.parseInt(textField_9.getText()),
 									Integer.parseInt(textField_10.getText()),
-									OS.UNIX, Arch.INTEL, description);
+									OS.UNIX, Arch.INTEL, description, machine);
 					} catch (IOException e) {
 						e.printStackTrace();
 						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);

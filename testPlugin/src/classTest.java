@@ -344,6 +344,7 @@ public class classTest implements FolderProcessingPlugins {
 		File dir = new File(textField_pathJob.getText());
 		Long time;
 		String nom="";
+		String machine ="";
 		if (structure.equals(FolderStructure.PatDatSer) || structure.equals(FolderStructure.PatDatProtSer)) {
 			for (int j = 0; j < folders.size(); j++) {
 				subdir=CopyOfrestingState.findFiles(folders.get(j).toString());
@@ -376,7 +377,7 @@ public class classTest implements FolderProcessingPlugins {
 						}
 						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-								+ nom + ".m\n");
+								+ nom + "\n");
 						writer.write("exit\n");
 						writer.close();
 						String desc = textArea_desc.getText(desc_1.length(),textArea_desc.getText().length() - desc_1.length());
@@ -389,13 +390,13 @@ public class classTest implements FolderProcessingPlugins {
 						for (int k=0;k<model.getSize();k++)
 							files.add(model.getElementAt(k));
 						if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description);
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
 						if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description);
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description, machine);
 						if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("X86_64"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description);
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description, machine);
 						if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description);
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description, machine);
 					} catch (IOException e) {
 						e.printStackTrace();
 						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
@@ -439,7 +440,7 @@ public class classTest implements FolderProcessingPlugins {
 						}
 					writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
 					writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-							+ nom + ".m\n");
+							+ nom + "\n");
 					writer.write("exit\n");
 					writer.close();
 					String desc = textArea_desc.getText(desc_2.length(), textArea_desc
@@ -451,13 +452,13 @@ public class classTest implements FolderProcessingPlugins {
 					for (int k=0;k<model.getSize();k++)
 						files.add(model.getElementAt(k));
 					if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description);
+						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
 					if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description);
+						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description, machine);
 					if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("X86_64"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description);
+						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description, machine);
 					if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description);
+						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description, machine);
 				} catch (IOException e) {
 					e.printStackTrace();
 					WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);

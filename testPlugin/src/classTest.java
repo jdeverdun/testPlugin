@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,7 +15,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import plugins.FolderProcessingPlugins;
-import plugins.FolderProcessingPlugins.FolderStructure;
 import settings.SystemSettings;
 import settings.WindowManager;
 import tools.cluster.condor.CondorUtils;
@@ -43,8 +43,8 @@ import display.MainWindow;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JList;
-import javax.swing.AbstractListModel;
 
 public class classTest implements FolderProcessingPlugins {
 
@@ -347,7 +347,7 @@ public class classTest implements FolderProcessingPlugins {
 		String machine ="";
 		if (structure.equals(FolderStructure.PatDatSer) || structure.equals(FolderStructure.PatDatProtSer)) {
 			for (int j = 0; j < folders.size(); j++) {
-				subdir=CopyOfrestingState.findFiles(folders.get(j).toString());
+				subdir=CopyOfrestingState.findFiles(folders.get(j).toString(),0);
 				for (int i = 0; i < subdir.size(); i++) {	
 					time = System.nanoTime();
 					nom = "job_" + time.toString();
@@ -389,6 +389,7 @@ public class classTest implements FolderProcessingPlugins {
 						files.add((new File(dir + File.separator + nom + ".m")));
 						for (int k=0;k<model.getSize();k++)
 							files.add(model.getElementAt(k));
+						
 						if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
 							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
 						if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
@@ -529,5 +530,5 @@ public class classTest implements FolderProcessingPlugins {
 			}
 		}
 	}
-
+	
 }

@@ -147,7 +147,7 @@ public class processing implements FolderProcessingPlugins {
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "Resting State3";
+		return "Processing";
 	}
 
 	public String actionOnFolders(ArrayList<File> folders,
@@ -804,6 +804,7 @@ public class processing implements FolderProcessingPlugins {
 		ArrayList<String> path_ss_dossier2 = new ArrayList<String>();
 		Boolean filt=false;
 		Boolean filt2=false;
+		String date="";
 		String machine = comboBox_Machine.getSelectedItem().toString();
 		String description="";
 		File dir = new File(textField_JobPath.getText());
@@ -858,7 +859,7 @@ public class processing implements FolderProcessingPlugins {
 									SystemSettings.APP_DIR + File.separator + "lib"
 											+ File.separator + "MATLAB"
 											+ File.separator
-											+ "batch_restingState.m"));
+											+ "batch_restingState2.m"));
 							BufferedWriter writer = new BufferedWriter(
 									new FileWriter(new File(dir + File.separator
 											+ nom + ".m")));
@@ -943,10 +944,6 @@ public class processing implements FolderProcessingPlugins {
 								writer.close();
 								String desc = textArea_desc.getText(desc_1.length(),
 										textArea_desc.getText().length() - desc_1.length());
-								String date = subdir.get(i).toString();
-								date = date.substring(0, 4) + "/"
-										+ date.substring(4, 6) + "/"
-										+ date.substring(6, 8);
 								description = "Patient : "
 										+ folders.get(j).getName() + "\n"
 										+ "Acquisition date : " + date + "\n" + desc;
@@ -997,7 +994,7 @@ public class processing implements FolderProcessingPlugins {
 									SystemSettings.APP_DIR + File.separator + "lib"
 											+ File.separator + "MATLAB"
 											+ File.separator
-											+ "batch_restingState.m"));
+											+ "batch_restingState2.m"));
 							BufferedWriter writer = new BufferedWriter(
 									new FileWriter(new File(dir + File.separator
 											+ nom + ".m")));
@@ -1082,10 +1079,6 @@ public class processing implements FolderProcessingPlugins {
 								writer.close();
 								String desc = textArea_desc.getText(desc_1.length(),
 										textArea_desc.getText().length() - desc_1.length());
-								String date = subdir.get(i).toString();
-								date = date.substring(0, 4) + "/"
-										+ date.substring(4, 6) + "/"
-										+ date.substring(6, 8);
 								description = "Patient : "
 										+ folders.get(j).getName() + "\n"
 										+ "Acquisition date : " + date + "\n" + desc;
@@ -1165,7 +1158,7 @@ public class processing implements FolderProcessingPlugins {
 						BufferedReader in = new BufferedReader(new FileReader(
 								SystemSettings.APP_DIR + File.separator + "lib"
 										+ File.separator + "MATLAB"
-										+ File.separator + "batch_restingState.m"));
+										+ File.separator + "batch_restingState2.m"));
 						BufferedWriter writer = new BufferedWriter(new FileWriter(
 								new File(dir + File.separator + nom + ".m")));
 						String line;
@@ -1289,7 +1282,7 @@ public class processing implements FolderProcessingPlugins {
 						BufferedReader in = new BufferedReader(new FileReader(
 								SystemSettings.APP_DIR + File.separator + "lib"
 										+ File.separator + "MATLAB"
-										+ File.separator + "batch_restingState.m"));
+										+ File.separator + "batch_restingState2.m"));
 						BufferedWriter writer = new BufferedWriter(new FileWriter(
 								new File(dir + File.separator + nom + ".m")));
 						String line;

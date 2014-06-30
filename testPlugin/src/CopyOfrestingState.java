@@ -145,7 +145,7 @@ public class CopyOfrestingState implements FolderProcessingPlugins {
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "Resting State1";
+		return "Resting State test";
 	}
 
 	public String actionOnFolders(ArrayList<File> folders,

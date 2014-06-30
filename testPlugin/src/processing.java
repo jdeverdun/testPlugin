@@ -859,7 +859,7 @@ public class processing implements FolderProcessingPlugins {
 									SystemSettings.APP_DIR + File.separator + "lib"
 											+ File.separator + "MATLAB"
 											+ File.separator
-											+ "batch_restingState2.m"));
+											+ "batch.m"));
 							BufferedWriter writer = new BufferedWriter(
 									new FileWriter(new File(dir + File.separator
 											+ nom + ".m")));
@@ -994,7 +994,7 @@ public class processing implements FolderProcessingPlugins {
 									SystemSettings.APP_DIR + File.separator + "lib"
 											+ File.separator + "MATLAB"
 											+ File.separator
-											+ "batch_restingState2.m"));
+											+ "batch.m"));
 							BufferedWriter writer = new BufferedWriter(
 									new FileWriter(new File(dir + File.separator
 											+ nom + ".m")));
@@ -1158,7 +1158,7 @@ public class processing implements FolderProcessingPlugins {
 						BufferedReader in = new BufferedReader(new FileReader(
 								SystemSettings.APP_DIR + File.separator + "lib"
 										+ File.separator + "MATLAB"
-										+ File.separator + "batch_restingState2.m"));
+										+ File.separator + "batch.m"));
 						BufferedWriter writer = new BufferedWriter(new FileWriter(
 								new File(dir + File.separator + nom + ".m")));
 						String line;
@@ -1282,7 +1282,7 @@ public class processing implements FolderProcessingPlugins {
 						BufferedReader in = new BufferedReader(new FileReader(
 								SystemSettings.APP_DIR + File.separator + "lib"
 										+ File.separator + "MATLAB"
-										+ File.separator + "batch_restingState2.m"));
+										+ File.separator + "batch.m"));
 						BufferedWriter writer = new BufferedWriter(new FileWriter(
 								new File(dir + File.separator + nom + ".m")));
 						String line;

@@ -1403,7 +1403,10 @@ public class processing implements FolderProcessingPlugins {
 			}
 		}
 	}
-
+	/****************************************************************************/
+	/** Retourne vrai si un JTextfield est correctement rempli avec un nombre  **/
+	/** ou une chaine de caractere                                             **/
+	/****************************************************************************/
 	public class MyVerifier /* extends InputVerifier */{
 		public boolean verify(Component component) {
 			String text = null;
@@ -1439,7 +1442,10 @@ public class processing implements FolderProcessingPlugins {
 		 * }
 		 */
 	}
-
+	/****************************************************************************/
+	/** Retourne le nom des repertoires (ou des fichiers selon n) fils d'un    **/
+	/** chemin donné                                                           **/
+	/****************************************************************************/
 	public static ArrayList<String> findFiles(String directoryPath, int n) {
 		File directory = new File(directoryPath);
 		ArrayList<String> subdir = new ArrayList<String>();
@@ -1465,6 +1471,10 @@ public class processing implements FolderProcessingPlugins {
 		}
 		return subdir;
 	}
+	/****************************************************************************/
+	/** Retourne le chemin absolu des repertoires (ou des fichiers selon n)    **/
+	/** fils d'un chemin donné                                                 **/
+	/****************************************************************************/
 	public ArrayList<String> findFiles2(String directoryPath, int n) {
 		File directory = new File(directoryPath);
 		ArrayList<String> subdir = new ArrayList<String>();
@@ -1490,7 +1500,9 @@ public class processing implements FolderProcessingPlugins {
 		}
 		return subdir;
 	}
-
+	/****************************************************************************/
+	/** Permet de ne pas pouvoir effacer dans la description la date et le nom **/
+	/****************************************************************************/
 	private class Filter extends DocumentFilter {
 		public void insertString(final FilterBypass fb, final int offset,
 				final String string, AttributeSet attr)
@@ -1516,7 +1528,9 @@ public class processing implements FolderProcessingPlugins {
 			}
 		}
 	}
-
+	/****************************************************************************/
+	/** Permet de ne pas pouvoir effacer dans la description le nom            **/
+	/****************************************************************************/
 	private class Filter2 extends DocumentFilter {
 		public void insertString(final FilterBypass fb, final int offset,
 				final String string, AttributeSet attr)
@@ -1547,6 +1561,9 @@ public class processing implements FolderProcessingPlugins {
 			}
 		}
 	}
+	/****************************************************************************/
+	/** Calcul le So                                                           **/
+	/****************************************************************************/
 	private void So(int nb,int e){
 		String res = "";
 		String res2 = "";
@@ -1579,46 +1596,19 @@ public class processing implements FolderProcessingPlugins {
 		textField_So.setText(res);
 		textField_RefSlice.setText(res2);
 	}
+	/****************************************************************************/
+	/** Calcul le Ta                                                           **/
+	/****************************************************************************/
 	private void Ta(int nb,float tr)
 	{
 		float res;
 		res=tr-tr/nb;
 		textField_Ta.setText(String.format("%.3f", res));
 	}
-	/*private void RemoveImage(ArrayList<File> folders, FolderStructure structure){
-		ArrayList<String> subdir = new ArrayList<String>();
-		ArrayList<String> subdir1 = new ArrayList<String>();
-		ArrayList<String> subdir2 = new ArrayList<String>();
-		ArrayList<String> subdir3 = new ArrayList<String>();
-		if(structure.equals(FolderStructure.PatDatProtSer)) {
-			for(int i=0;i<folders.size();i++)
-			{
-				//subdir.clear();
-				subdir.addAll(findFiles2(folders.get(i).toString(),0));
-				//System.out.println(folders.get(i).toString());
-				//System.out.println("1 : "+subdir);
-				for(int j=0;j<subdir.size();j++)
-				{
-					//subdir1.clear();
-					subdir1.addAll(findFiles2(subdir.get(j).toString(),0));
-					//System.out.println("2 : "+subdir1);
-				}
-			}
-			System.out.println("1 : "+subdir);
-			System.out.println(subdir.size());
-			System.out.println("2 : "+subdir1);
-			System.out.println(subdir1.size());
-		}
-		else if(structure.equals(FolderStructure.PatDatSer)) {
-
-		}
-		else if(structure.equals(FolderStructure.PatProtSer)) {
-
-		}
-		else if(structure.equals(FolderStructure.PatSer)) {
-
-		}
-	}*/
+	/****************************************************************************/
+	/** Verifie par panel que les JTextFiels soit correctement rempli, sinon   **/
+	/** renvoi un message d'erreur                                             **/
+	/****************************************************************************/
 	private boolean VerifyJText(){
 		ArrayList<String> error =new ArrayList<String>();
 		MyVerifier verifier = new MyVerifier();

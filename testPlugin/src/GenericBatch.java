@@ -55,7 +55,7 @@ import javax.swing.JList;
 
 import javax.swing.JCheckBox;
 
-public class classTest implements FolderProcessingPlugins {
+public class GenericBatch implements FolderProcessingPlugins {
 
 	private JFrame frame;
 	private String title="General Batch";
@@ -470,9 +470,10 @@ public class classTest implements FolderProcessingPlugins {
 				for (int i = 0; i < subdir.size(); i++) {	
 					time = System.nanoTime();
 					nom = "job_" + time.toString();
+					File matfile = new File(dir + File.separator + nom + ".m");
 					try {
 						BufferedReader in = new BufferedReader(new FileReader(textField_batch.getText()));
-						BufferedWriter writer = new BufferedWriter(new FileWriter(new File(dir + File.separator+ nom + ".m")));
+						BufferedWriter writer = new BufferedWriter(new FileWriter(matfile));
 						String line;
 						while ((line = in.readLine()) != null) {
 							line = line.replace("#15#", folders.get(j).toString()+ File.separator+ subdir.get(i).toString());
@@ -487,36 +488,42 @@ public class classTest implements FolderProcessingPlugins {
 						}
 						in.close();
 						writer.close();
-						if(comboBox_op.getSelectedItem().equals("WINDOWS")){
-							writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".bat")));
+						if(chckbx_Local.isSelected()){
+							ArrayList<File> mfiles = new ArrayList<File>();
+							mfiles.add(matfile);
+							CondorUtils.submitJobLocal(dir,mfiles,textField_ExeMatlab.getText());
+						}else{
+							if(comboBox_op.getSelectedItem().equals("WINDOWS")){
+								writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".bat")));
+							}
+							else{
+								writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".sh")));
+								writer.write("#!/bin/sh");
+							}
+							writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
+							writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
+									+ nom + "\n");
+							writer.write("exit\n");
+							writer.close();
+							String desc = textArea_desc.getText(desc_1.length(),textArea_desc.getText().length() - desc_1.length());
+							String date = subdir.get(i).toString();
+							date = date.substring(0, 4) + "/"+ date.substring(4, 6) + "/"+ date.substring(6, 8);
+							String description = "Patient : "+ folders.get(j).getName() + "\n"+ "Acquisition date : " + date + "\n" + desc;
+							
+							ArrayList<File> files = new ArrayList<>();
+							files.add((new File(dir + File.separator + nom + ".m")));
+							for (int k=0;k<model.getSize();k++)
+								files.add(model.getElementAt(k));
+							
+							if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
+								CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
+							if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
+								CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description, machine);
+							if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("X86_64"))
+								CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description, machine);
+							if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("INTEL"))
+								CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description, machine);
 						}
-						else{
-							writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".sh")));
-							writer.write("#!/bin/sh");
-						}
-						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
-						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-								+ nom + "\n");
-						writer.write("exit\n");
-						writer.close();
-						String desc = textArea_desc.getText(desc_1.length(),textArea_desc.getText().length() - desc_1.length());
-						String date = subdir.get(i).toString();
-						date = date.substring(0, 4) + "/"+ date.substring(4, 6) + "/"+ date.substring(6, 8);
-						String description = "Patient : "+ folders.get(j).getName() + "\n"+ "Acquisition date : " + date + "\n" + desc;
-						
-						ArrayList<File> files = new ArrayList<>();
-						files.add((new File(dir + File.separator + nom + ".m")));
-						for (int k=0;k<model.getSize();k++)
-							files.add(model.getElementAt(k));
-						
-						if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
-						if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description, machine);
-						if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("X86_64"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description, machine);
-						if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description, machine);
 					} catch (IOException e) {
 						e.printStackTrace();
 						WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);
@@ -534,9 +541,10 @@ public class classTest implements FolderProcessingPlugins {
 			for (int j = 0; j < folders.size(); j++) {
 				time = System.nanoTime();
 				nom  = "job_" + time.toString();
+				File matfile = new File(dir + File.separator + nom + ".m");
 				try {
 					BufferedReader in = new BufferedReader(new FileReader(textField_batch.getText()));
-					BufferedWriter writer = new BufferedWriter(new FileWriter(new File(dir + File.separator + nom + ".m")));
+					BufferedWriter writer = new BufferedWriter(new FileWriter(matfile));
 					String line;
 					while ((line = in.readLine()) != null) {
 						line = line.replace("#15#", folders.get(j).toString());
@@ -551,34 +559,40 @@ public class classTest implements FolderProcessingPlugins {
 					}
 					in.close();
 					writer.close();
-					if(comboBox_op.getSelectedItem().equals("WINDOWS")){
-						writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".bat")));
-						}
-					else{
-						writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".sh")));
-						writer.write("#!/bin/sh");
-						}
-					writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
-					writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
-							+ nom + "\n");
-					writer.write("exit\n");
-					writer.close();
-					String desc = textArea_desc.getText(desc_2.length(), textArea_desc
-							.getText().length() - desc_2.length());
-					String description = "Patient : "
-							+ folders.get(j).getName() + "\n" + desc;
-					ArrayList<File> files = new ArrayList<>();
-					files.add((new File(dir + File.separator + nom + ".m")));
-					for (int k=0;k<model.getSize();k++)
-						files.add(model.getElementAt(k));
-					if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
-					if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description, machine);
-					if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("X86_64"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description, machine);
-					if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("INTEL"))
-						CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description, machine);
+					if(chckbx_Local.isSelected()){
+						ArrayList<File> mfiles = new ArrayList<File>();
+						mfiles.add(matfile);
+						CondorUtils.submitJobLocal(dir,mfiles,textField_ExeMatlab.getText());
+					}else{
+						if(comboBox_op.getSelectedItem().equals("WINDOWS")){
+							writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".bat")));
+							}
+						else{
+							writer = new BufferedWriter(new FileWriter(new File(dir+ File.separator + nom + ".sh")));
+							writer.write("#!/bin/sh");
+							}
+						writer.write("echo \"%1 %2 %3 %4 %5 %6 %7 %8 %9\"\n");
+						writer.write("\"%1 %2 %3 %4 %5 %6 %7 %8 %9\" -logfile matlablog.log -nodesktop -nosplash -r "
+								+ nom + "\n");
+						writer.write("exit\n");
+						writer.close();
+						String desc = textArea_desc.getText(desc_2.length(), textArea_desc
+								.getText().length() - desc_2.length());
+						String description = "Patient : "
+								+ folders.get(j).getName() + "\n" + desc;
+						ArrayList<File> files = new ArrayList<>();
+						files.add((new File(dir + File.separator + nom + ".m")));
+						for (int k=0;k<model.getSize();k++)
+							files.add(model.getElementAt(k));
+						if (comboBox_op.getSelectedItem().equals("WINDOWS") && comboBox_arch.getSelectedItem().equals("X86_64"))
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.X86_64, description, machine);
+						if (comboBox_op.getSelectedItem().equals("WINDOWS")&& comboBox_arch.getSelectedItem().equals("INTEL"))
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.WINDOWS, Arch.INTEL, description, machine);
+						if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("X86_64"))
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.X86_64, description, machine);
+						if (comboBox_op.getSelectedItem().equals("UNIX")&& comboBox_arch.getSelectedItem().equals("INTEL"))
+							CondorUtils.submitJob(dir, files, new File(dir + File.separator + nom + ".bat"),Integer.parseInt(textField_nbCpu.getText()),Integer.parseInt(textField_nbMem.getText()),OS.UNIX, Arch.INTEL, description, machine);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					WindowManager.mwLogger.log(Level.SEVERE, "Error : cannot create .m file for "+folders.get(j).getName(),e);

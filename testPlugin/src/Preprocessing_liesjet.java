@@ -53,9 +53,9 @@ import display.MainWindow;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class processing implements FolderProcessingPlugins {
+public class Preprocessing_liesjet implements FolderProcessingPlugins {
 	private JFrame frame;
-	private String title = "Resting State ";
+	private String title = "Traitement liesjet ";
 	private String txt;
 	private String desc_1 = "Patient : \"name\" \nAcquisition Date : \"date\"\n";
 	private String desc_2 = "Patient : \"name\" \n";
@@ -147,7 +147,7 @@ public class processing implements FolderProcessingPlugins {
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "Processing";
+		return "Traitement lisjet";
 	}
 
 	public String actionOnFolders(ArrayList<File> folders,
